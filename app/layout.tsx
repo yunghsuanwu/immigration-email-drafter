@@ -8,8 +8,8 @@ import { Inter } from "next/font/google"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
+  title: "Re:Immigration – Contact Your MP",
+  description: "Immigration rule change to skilled worker visas, social care worker visa, and other barriers is imminent. Act now to get your voice heard.",
   generator: "v0.dev",
 }
 
@@ -20,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={inter.className}>
         <NavBar />
         {children}
