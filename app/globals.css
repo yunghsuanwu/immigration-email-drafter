@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -45,24 +46,35 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  /* Backgrounds */
+  --background: #f8f9fa; /* Off-white */
+  --background-secondary: #ffffff; /* Pure white for contrast if needed */
+  --card: #ffffff; /* White cards */
+  --card-foreground: #232323; /* Dark text on cards */
+  --popover: #ffffff;
+  --popover-foreground: #232323;
+
+  /* Headlines & Accents */
+  --headline-primary: #ff6b35; /* Vibrant orange */
+  --headline-secondary: #4a90e2; /* Trust blue */
+  --accent: #27ae60; /* Hope green */
+
+  /* Typography */
+  --foreground: #232323; /* Dark gray for main text */
+  --text-primary: #232323;
+  --text-secondary: #495057;
+  --text-muted: #868e96;
+
+  /* Interactive */
+  --cta: #ff6b35; /* Orange */
+  --button-secondary: #4a90e2; /* Blue */
+  --link: #20c997; /* Teal */
+  --hover-orange: #ff8c5a; /* Lighter orange */
+
+  /* Border, input, ring, etc. */
+  --border: #ced4da;
+  --input: #e9ecef;
+  --ring: #ff6b35;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -79,24 +91,30 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --background: #232323;
+  --background-secondary: #2d2d2d;
+  --card: #363636;
+  --card-foreground: #f8f9fa;
+  --popover: #363636;
+  --popover-foreground: #f8f9fa;
+
+  --headline-primary: #ff6b35;
+  --headline-secondary: #4a90e2;
+  --accent: #27ae60;
+
+  --foreground: #f8f9fa;
+  --text-primary: #f8f9fa;
+  --text-secondary: #ced4da;
+  --text-muted: #868e96;
+
+  --cta: #ff6b35;
+  --button-secondary: #4a90e2;
+  --link: #20c997;
+  --hover-orange: #ff8c5a;
+
+  --border: #363636;
+  --input: #2d2d2d;
+  --ring: #ff6b35;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -114,9 +132,24 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-[var(--border)];
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Permanent Marker', var(--font-sans), sans-serif;
   }
+  h1 {
+    color: var(--headline-primary);
+  }
+  h2 {
+    color: var(--headline-secondary);
+  }
+}
+
+a {
+  color: var(--link);
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--hover-orange);
 }
