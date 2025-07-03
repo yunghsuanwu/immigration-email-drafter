@@ -2,9 +2,9 @@
 
 export function HeroSection() {
   const handleScroll = () => {
-    const intro = document.getElementById('project-intro')
-    if (intro) {
-      intro.scrollIntoView({ behavior: 'smooth' })
+    const cta = document.getElementById('call-to-action')
+    if (cta) {
+      cta.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
