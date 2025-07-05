@@ -3,12 +3,13 @@ export type FormData = {
   constituentName: string
   constituentEmail: string
   whyWriting: "visa-employee" | "employer" | "other-reasons"
-  residentialStatus: "uk-national" | "visa-holder" | "others"
+  residentialStatus: "uk-national" | "visa-holder" | "other-status"
   residentialStatusOther?: string
   visaType?: string
   yearsInUK?: string
   yearlyIncome?: string
   profession?: string
+  SOC?: string
   annualTaxContribution?: string
   // Employer-specific fields
   industry?: string
@@ -50,6 +51,44 @@ export const visaTypes = [
   "Innovator visa",
   "Investor visa",
   "Other",
+]
+
+export const industryTypes = [
+  "Technology & Software",
+  "Financial Services",
+  "Healthcare & Pharmaceuticals",
+  "Manufacturing",
+  "Retail & E-commerce",
+  "Education",
+  "Consulting & Professional Services",
+  "Media & Entertainment",
+  "Transportation & Logistics",
+  "Construction & Real Estate",
+  "Energy & Utilities",
+  "Food & Beverage",
+  "Hospitality & Tourism",
+  "Non-profit & Charities",
+  "Government & Public Sector",
+  "Other",
+]
+
+export const revenueBrackets = [
+  "Less than £100,000",
+  "£100,000 - £500,000",
+  "£500,001 - £1,000,000",
+  "£1,000,001 - £5,000,000",
+  "£5,000,001 - £10,000,000",
+  "£10,000,001 - £50,000,000",
+  "£50,000,001 - £100,000,000",
+  "£100,000,001 or more",
+]
+
+export const companySizes = [
+  "1-10 employees",
+  "11-50 employees",
+  "51-200 employees",
+  "201-1000 employees",
+  "1000+ employees",
 ]
 
 export type Representative = {

@@ -19,7 +19,7 @@ import { exportData } from "@/lib/export-data"
 import { useToast } from "@/hooks/use-toast"
 import { useMobile } from "@/hooks/use-mobile"
 import type { FormData } from "@/types/form-data"
-import { salaryBrackets, visaTypes } from "@/types/form-data"
+import { salaryBrackets, visaTypes, industryTypes, revenueBrackets, companySizes } from "@/types/form-data"
 
 type EmailData = {
   recipient: string
@@ -29,37 +29,14 @@ type EmailData = {
 }
 
 const salaryBracketOptions = salaryBrackets
+
 const visaTypeOptions = visaTypes
 
-const industryOptions = [
-  "Technology & Software",
-  "Financial Services",
-  "Healthcare & Pharmaceuticals",
-  "Manufacturing",
-  "Retail & E-commerce",
-  "Education",
-  "Consulting & Professional Services",
-  "Media & Entertainment",
-  "Transportation & Logistics",
-  "Construction & Real Estate",
-  "Energy & Utilities",
-  "Food & Beverage",
-  "Hospitality & Tourism",
-  "Non-profit & Charities",
-  "Government & Public Sector",
-  "Other",
-]
+const industryOptions = industryTypes
 
-const revenueBrackets = [
-  "Less than £100,000",
-  "£100,000 - £500,000",
-  "£500,001 - £1,000,000",
-  "£1,000,001 - £5,000,000",
-  "£5,000,001 - £10,000,000",
-  "£10,000,001 - £50,000,000",
-  "£50,000,001 - £100,000,000",
-  "£100,000,001 or more",
-]
+const revenueBracketsOptions = revenueBrackets
+
+const compnaySizesOptions = companySizes
 
 export function EmailDrafter() {
   const [activeTab, setActiveTab] = useState("input")
@@ -85,6 +62,7 @@ export function EmailDrafter() {
       yearsInUK: "",
       yearlyIncome: "",
       profession: "",
+      SOC: "",
       annualTaxContribution: "",
       // Employer-specific fields
       industry: "",
@@ -276,7 +254,7 @@ export function EmailDrafter() {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 {/* Basic Information Section */}
                 {currentSection === "basic-info" && (
-                  <div className="space-y-6">
+                  <div className="space-y-12">
                     <div className="space-y-6">
                       <h3 className="text-lg font-semibold">Basic Information</h3>
 
@@ -317,7 +295,7 @@ export function EmailDrafter() {
                           <FormItem>
                             <FormLabel>Postal Code *</FormLabel>
                             <FormControl>
-                              <Input placeholder="e.g., SW1A 1AA" className="text-gray-400 italic" {...field} />
+                              <Input placeholder="e.g., SW1A 1AA" className="placeholder:text-gray-400 placeholder:italic" {...field} />
                             </FormControl>
                             <FormDescription className="text-gray-400 italic">We'll use this to find your MP and local councilors.</FormDescription>
                             <FormMessage />
@@ -349,7 +327,7 @@ export function EmailDrafter() {
                                     checked={field.value === "employer"}
                                     onChange={() => field.onChange("employer")}
                                   />
-                                  <span>I am an employer thinking of or is currently hiring overseas workers.</span>
+                                  <span>I am an employer considering or is currently hiring overseas workers.</span>
                                 </label>
                                 <label className="flex items-center space-x-2">
                                   <input
@@ -377,7 +355,7 @@ export function EmailDrafter() {
 
                 {/* Residency Status Section */}
                 {currentSection === "residency-status" && (
-                  <div className="space-y-6">
+                  <div className="space-y-12">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Residency Status</h3>
                       
@@ -410,11 +388,11 @@ export function EmailDrafter() {
                                 <label className="flex items-center space-x-2">
                                   <input
                                     type="radio"
-                                    value="others"
-                                    checked={field.value === "others"}
-                                    onChange={() => field.onChange("others")}
+                                    value="other-status"
+                                    checked={field.value === "other-status"}
+                                    onChange={() => field.onChange("other-status")}
                                   />
-                                  <span>Others.</span>
+                                  <span>Other status.</span>
                                 </label>
                               </div>
                             </FormControl>
@@ -423,7 +401,7 @@ export function EmailDrafter() {
                         )}
                       />
 
-                      {watchResidentialStatus === "others" && (
+                      {watchResidentialStatus === "other-status" && (
                         <FormField
                           control={form.control}
                           name="residentialStatusOther"
@@ -431,7 +409,7 @@ export function EmailDrafter() {
                             <FormItem>
                               <FormLabel>Please describe your residential status.</FormLabel>
                               <FormControl>
-                                <Input placeholder="e.g., EU Settled Status, Tier 2 Visa" className="text-gray-400 italic" {...field} />
+                                <Input placeholder="e.g., EU Settled Status, Tier 2 Visa" className="placeholder:text-gray-400 placeholder:italic" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -465,16 +443,40 @@ export function EmailDrafter() {
                       <FormField
                         control={form.control}
                         name="yearsInUK"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>How long have you been in the UK?</FormLabel>
-                            <FormControl>
-                              <Input type="number" placeholder="Number of years" className="text-gray-400 italic" {...field} />
-                            </FormControl>
-                            <FormDescription>Optional - helps demonstrate your connection to the UK</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        render={({ field }) => {
+                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
+                          
+                          return (
+                            <FormItem>
+                              <FormLabel>How long have you been in the UK? (Please answer in years)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="text"
+                                  placeholder="e.g., 1, 1.5, 2"
+                                  className="placeholder:text-gray-400 placeholder:italic"
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Only allow digits 0-9 and decimal point
+                                    if (value === '' || /^[0-9.]*$/.test(value)) {
+                                      field.onChange(value);
+                                      setHasInvalidInput(false);
+                                    } else {
+                                      setHasInvalidInput(true);
+                                    }
+                                  }}
+                                />
+                              </FormControl>
+                              {hasInvalidInput && (
+                                <p className="text-red-500 text-sm mt-1">
+                                  Please only enter digits 0-9 and a decimal point.
+                                </p>
+                              )}
+                              <FormDescription className="text-gray-400 italic">Optional - helps demonstrate your connection to the UK</FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          );
+                        }}
                       />
                     </div>
 
@@ -492,7 +494,7 @@ export function EmailDrafter() {
 
                 {/* Economic Info Section (for visa-employee and other-reasons) */}
                 {currentSection === "economic-info" && (
-                  <div className="space-y-6">
+                  <div className="space-y-12">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Economic Information</h3>
                       <p className="text-sm text-muted-foreground">This section is completely optional. You can skip it if you prefer.</p>
@@ -502,9 +504,9 @@ export function EmailDrafter() {
                         name="yearlyIncome"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Yearly income</FormLabel>
+                            <FormLabel>Yearly income (£)</FormLabel>
                             <FormControl>
-                              <select className="w-full p-2 border rounded-md" {...field}>
+                              <select className="w-full p-2 border rounded-md text-sm" {...field}>
                                 <option value="">Select income bracket</option>
                                 {salaryBracketOptions.map((bracket: string) => (
                                   <option key={bracket} value={bracket}>
@@ -523,9 +525,9 @@ export function EmailDrafter() {
                         name="profession"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Profession</FormLabel>
+                            <FormLabel>Profession/Job Title</FormLabel>
                             <FormControl>
-                              <Input placeholder="Your profession or job title" className="text-gray-400 italic" {...field} />
+                              <Input {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -534,16 +536,87 @@ export function EmailDrafter() {
 
                       <FormField
                         control={form.control}
+                        name="SOC"
+                        render={({ field }) => {
+                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
+
+                          return (
+                            <FormItem>
+                              <FormLabel>Standard Occupational Code (SOC)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="e.g., 1111" 
+                                  className="placeholder:text-gray-400 placeholder:italic" 
+                                  maxLength={4}
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Only allow digits and limit to 4 characters
+                                    if (value === '' || /^\d{0,4}$/.test(value)) {
+                                      field.onChange(value);
+                                      setHasInvalidInput(false);
+                                    } else {
+                                      setHasInvalidInput(true);
+                                    }
+                                  }}
+                                />
+                              </FormControl>
+                              {hasInvalidInput && (
+                                <p className="text-red-500 text-sm mt-1">
+                                  Please only input your four-digit SOC.
+                                </p>
+                              )}
+                              <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
+                                <a
+                                  href="https://www.gov.uk/government/publications/skilled-worker-visa-eligible-occupations/skilled-worker-visa-eligible-occupations-and-codes"
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="underline"
+                                >
+                                  official CASCOT tool
+                                </a>.
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          );
+                        }}
+                      />
+
+                      <FormField
+                        control={form.control}
                         name="annualTaxContribution"
-                        render={({ field }) => (
+                        render={({ field }) => {
+                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
+
+                          return (
                           <FormItem>
-                            <FormLabel>Annual Tax Contribution</FormLabel>
+                            <FormLabel>Annual Tax Contribution (£)</FormLabel>
                             <FormControl>
-                              <Input placeholder="Approximate annual tax paid (£)" className="text-gray-400 italic" {...field} />
+                              <Input
+                                placeholder="Please provide an approximate."
+                                className="placeholder:text-gray-400 placeholder:italic"
+                                {...field}
+                                onChange={(e) => {
+                                const value = e.target.value;
+                                //only allow digits and decimal points.
+                                  if (value === '' || /^[0-9.]*$/.test(value)) {
+                                    field.onChange(value);
+                                    setHasInvalidInput(false);
+                                  } else {
+                                    setHasInvalidInput(true);
+                                  }
+                                }}
+                              />
                             </FormControl>
+                            {hasInvalidInput && (
+                              <p className="text-red-500 text-sm mt-1">
+                                Please only enter digits 0-9 and a decimal point.
+                              </p>
+                            )}
                             <FormMessage />
                           </FormItem>
-                        )}
+                          );
+                        }}
                       />
                     </div>
 
@@ -561,7 +634,7 @@ export function EmailDrafter() {
 
                 {/* Employer Details Section */}
                 {currentSection === "company-information" && (
-                  <div className="space-y-6">
+                  <div className="space-y-12">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Your Company Information</h3>
                       
@@ -572,7 +645,7 @@ export function EmailDrafter() {
                           <FormItem>
                             <FormLabel>Industry *</FormLabel>
                             <FormControl>
-                              <select className="w-full p-2 border rounded-md" {...field}>
+                              <select className="w-full p-2 border rounded-md text-sm" {...field}>
                                 <option value="">Select industry</option>
                                 {industryOptions.map((industry: string) => (
                                   <option key={industry} value={industry}>
@@ -593,13 +666,14 @@ export function EmailDrafter() {
                           <FormItem>
                             <FormLabel>Size of your company (number of employees) *</FormLabel>
                             <FormControl>
-                              <select className="w-full p-2 border rounded-md" {...field}>
+                              <select className="w-full p-2 border rounded-md text-sm" {...field}>
                                 <option value="">Select company size</option>
-                                <option value="1-10 employees">1-10 employees</option>
-                                <option value="11-50 employees">11-50 employees</option>
-                                <option value="51-200 employees">51-200 employees</option>
-                                <option value="201-1000 employees">201-1000 employees</option>
-                                <option value="1000+ employees">1000+ employees</option>
+                                {compnaySizesOptions.map((bracket: string) => (
+                                  <option key={bracket} value={bracket}>
+                                    {bracket}
+                                  </option>
+                                ))
+                                }
                               </select>
                             </FormControl>
                             <FormMessage />
@@ -614,9 +688,9 @@ export function EmailDrafter() {
                           <FormItem>
                             <FormLabel>Yearly Revenue (£)</FormLabel>
                             <FormControl>
-                              <select className="w-full p-2 border rounded-md" {...field}>
+                              <select className="w-full p-2 border rounded-md text-sm" {...field}>
                                 <option value="">Select revenue bracket</option>
-                                {revenueBrackets.map((bracket: string) => (
+                                {revenueBracketsOptions.map((bracket: string) => (
                                   <option key={bracket} value={bracket}>
                                     {bracket}
                                   </option>
@@ -631,29 +705,73 @@ export function EmailDrafter() {
                       <FormField
                         control={form.control}
                         name="currentOverseasEmployees"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>How many overseas employees (those on a visa) do you have right now?</FormLabel>
-                            <FormControl>
-                              <Input type="number" placeholder="e.g., 5" className="text-gray-400 italic" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        render={({ field }) => {
+                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
+                          return(
+                            <FormItem>
+                              <FormLabel>How many employees do you have are visa holders right now?</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="e.g., 5" 
+                                  className="placeholder:text-gray-400 placeholder:italic" 
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    //only allow digits.
+                                      if (value === '' || /^[0-9]*$/.test(value)) {
+                                        field.onChange(value);
+                                        setHasInvalidInput(false);
+                                      } else {
+                                        setHasInvalidInput(true);
+                                      }
+                                    }}
+                                />
+                              </FormControl>
+                              {hasInvalidInput && (
+                              <p className="text-red-500 text-sm mt-1">
+                                Please only enter digits 0-9.
+                              </p>
+                              )}
+                              <FormMessage />
+                            </FormItem>
+                          );
+                        }}
                       />
 
                       <FormField
                         control={form.control}
                         name="plannedOverseasHires"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>How many overseas workers are you thinking of hiring?</FormLabel>
-                            <FormControl>
-                              <Input type="number" placeholder="e.g., 10" className="text-gray-400 italic" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        render={({ field }) => {
+                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
+                          return(
+                            <FormItem>
+                              <FormLabel>How many overseas workers are you considering hiring?</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="e.g., 10" 
+                                  className="placeholder:text-gray-400 placeholder:italic" 
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    //only allow digits.
+                                      if (value === '' || /^[0-9]*$/.test(value)) {
+                                        field.onChange(value);
+                                        setHasInvalidInput(false);
+                                      } else {
+                                        setHasInvalidInput(true);
+                                      }
+                                    }}
+                                />
+                              </FormControl>
+                              {hasInvalidInput && (
+                              <p className="text-red-500 text-sm mt-1">
+                                Please only enter digits 0-9.
+                              </p>
+                              )}
+                              <FormMessage />
+                            </FormItem>
+                          );
+                        }}
                       />
                     </div>
 
@@ -671,7 +789,7 @@ export function EmailDrafter() {
 
                 {/* Immigration Concerns Section */}
                 {currentSection === "concerns" && (
-                  <div className="space-y-6">
+                  <div className="space-y-12">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Concerns about the rule change</h3>
 
@@ -679,27 +797,24 @@ export function EmailDrafter() {
                         control={form.control}
                         name="immigrationConcerns"
                         render={({ field }) => (
-                          <FormItem>
+                          <FormItem className="space-y-2">
                             <FormLabel>
-                              {watchWhyWriting === "employer" 
-                                ? "How would the immigration rule change affect your company? What are your top concerns about the immigration white paper? *"
-                                : "How would the immigration rule change affect you or the people around you? What are your top concerns about the immigration white paper? *"
-                              }
+                              What are your top concerns about the immigration white paper? *
                             </FormLabel>
+                            <FormDescription>
+                              Feel free to write in the most suitable ways; bullet points, short sentences, full paragraphs, another language, anything works!
+                            </FormDescription>
                             <FormControl>
                               <Textarea
                                 placeholder={
                                   watchWhyWriting === "employer"
                                     ? "Please describe how the immigration changes might affect your business operations, hiring plans, or company growth..."
-                                    : "Please describe your specific concerns about the immigration white paper and how it might affect you, your family, or your community..."
+                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community..."
                                 }
-                                className="min-h-[120px] italic text-gray-400"
+                                className="min-h-[120px] placeholder:italic placeholder:text-gray-400"
                                 {...field}
                               />
                             </FormControl>
-                            <FormDescription>
-                              Feel free to write in the most suitable ways; bullet points, short sentences, full paragraphs, another language, anything works!
-                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -720,7 +835,7 @@ export function EmailDrafter() {
 
                 {/* Data Collection Section */}
                 {currentSection === "data-collection" && (
-                  <div className="space-y-6">
+                  <div className="space-y-12">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Data Collection</h3>
 
@@ -848,7 +963,7 @@ export function EmailDrafter() {
               href="https://notastranger.org/privacy" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="underline hover:text-gray-700"
+              className="underline"
             >
               here
             </a>.

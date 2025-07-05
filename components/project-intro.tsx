@@ -13,7 +13,9 @@ export function RuleChange() {
             closing the social care worker visa route to overseas recruitment;
           </li>
           <li>
-            only allowing time-limited access below degree level through a targeted immigration salary list and temporary shortage list, for critical roles only, with strict requirements for sectors to grow domestic skills;
+            only allowing time-limited access below degree level through a targeted immigration salary list 
+            and temporary shortage list, for critical roles only, with strict requirements for sectors to 
+            grow domestic skills;
           </li>
           <li>
             commissioning the Migration Advisory Committee (MAC) to conduct a review of the temporary shortage list including occupations, salaries and benefits.

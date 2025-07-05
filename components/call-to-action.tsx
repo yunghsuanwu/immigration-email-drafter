@@ -5,7 +5,7 @@ export function CallToAction() {
       <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
         With the immigration rule change imminent (
           <a
-           href="https://notastranger.org/contactyourmp/about"
+           href="http://localhost:3000/about"
            target="_blank"
            rel="noopener noreferrer"
            className="underline"
