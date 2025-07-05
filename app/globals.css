@@ -168,3 +168,10 @@ a:hover {
   color: #374151; /* text-gray-700 */
   font-style: italic;
 }
+
+/* Custom selection color for all text fields */
+input::selection,
+textarea::selection {
+  background: #bfdbfe; /* Tailwind blue-200 */
+  color: #000;         /* Black text */
+}

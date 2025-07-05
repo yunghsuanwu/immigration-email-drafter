@@ -1,7 +1,7 @@
 export function CallToAction() {
   return (
     <section id="call-to-action" className="py-6 md:py-10 text-center px-4 mb-8">
-      <h2 className="text-3xl md:text-5xl font-bold mb-2">Re:Immigration</h2>
+      <h2 className="text-3xl md:text-5xl font-bold mb-2">RE:Immigration</h2>
       <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
         With the immigration rule change imminent (
           <a

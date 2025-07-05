@@ -19,7 +19,7 @@ export function EmailEditor({ initialContent, onChange, recipient, subject }: Em
   }, [content, onChange])
 
   return (
-    <Card className="border-dashed">
+    <Card className="border-0">
       <CardHeader className="pb-2">
         <div className="space-y-1">
           <div className="text-sm">

@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Loader2, Send, Download, Edit, ArrowRight, Info, Shield } from "lucide-react"
+import { Loader2, Send, Download, Edit, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
 import { EmailEditor } from "@/components/email-editor"
 import { RepresentativeSelector } from "@/components/representative-selector"
 import { generateMPEmail } from "@/lib/generate-mp-email"
@@ -47,6 +47,7 @@ export function EmailDrafter() {
   const [editedEmail, setEditedEmail] = useState("")
   const [submissionId, setSubmissionId] = useState("")
   const [emailHistory, setEmailHistory] = useState<EmailData[]>([])
+  const [isProTipsOpen, setIsProTipsOpen] = useState(false)
   const { toast } = useToast()
   const isMobile = useMobile()
 
@@ -232,9 +233,9 @@ export function EmailDrafter() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Re:Immigration – MP email drafter</CardTitle>
+        <CardTitle>RE:Immigration Email Drafter</CardTitle>
         <CardDescription>
-          Answer a few questions to help us generate a personalised email. We only ask essential questions for your MP to know about your situation.
+          Answer a few questions to generate a personalised email. We only ask the essentials for your MP to know about your situation.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -266,7 +267,7 @@ export function EmailDrafter() {
                             <FormItem>
                               <FormLabel>Full Name *</FormLabel>
                               <FormControl>
-                                <Input {...field} />
+                                <Input {...field} className="select-text" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -280,7 +281,7 @@ export function EmailDrafter() {
                             <FormItem>
                               <FormLabel>Email Address *</FormLabel>
                               <FormControl>
-                                <Input type="email" {...field} />
+                                <Input type="email" {...field} className="select-text" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -294,9 +295,9 @@ export function EmailDrafter() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Postal Code *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="e.g., SW1A 1AA" className="placeholder:text-gray-400 placeholder:italic" {...field} />
-                            </FormControl>
+                                                          <FormControl>
+                                <Input placeholder="e.g., SW1A 1AA" className="placeholder:text-gray-400 placeholder:italic select-text" {...field} />
+                              </FormControl>
                             <FormDescription className="text-gray-400 italic">We'll use this to find your MP and local councilors.</FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -311,30 +312,33 @@ export function EmailDrafter() {
                             <FormLabel>Why are you writing this email? *</FormLabel>
                             <FormControl>
                               <div className="space-y-2 pl-4">
-                                <label className="flex items-center space-x-2">
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
                                     type="radio"
                                     value="visa-employee"
                                     checked={field.value === "visa-employee"}
                                     onChange={() => field.onChange("visa-employee")}
+                                    className="cursor-pointer"
                                   />
                                   <span>I am an employee on visa.</span>
                                 </label>
-                                <label className="flex items-center space-x-2">
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
                                     type="radio"
                                     value="employer"
                                     checked={field.value === "employer"}
                                     onChange={() => field.onChange("employer")}
+                                    className="cursor-pointer"
                                   />
                                   <span>I am an employer considering or is currently hiring overseas workers.</span>
                                 </label>
-                                <label className="flex items-center space-x-2">
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
                                     type="radio"
                                     value="other-reasons"
                                     checked={field.value === "other-reasons"}
                                     onChange={() => field.onChange("other-reasons")}
+                                    className="cursor-pointer"
                                   />
                                   <span>I am writing for other reasons.</span>
                                 </label>
@@ -345,11 +349,12 @@ export function EmailDrafter() {
                         )}
                       />
                     </div>
-
-                    <Button type="button" onClick={handleNextSection} className="w-full">
-                      Continue
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <div className="flex justify-end">
+                       <Button type="button" variant="outline" onClick={handleNextSection} className="w-1/2 hover:bg-gray-200 cursor-pointer">
+                         Continue
+                         <ArrowRight className="ml-2 h-4 w-4" />
+                       </Button>
+                     </div>
                   </div>
                 )}
 
@@ -367,30 +372,33 @@ export function EmailDrafter() {
                             <FormLabel>What is your residential status? *</FormLabel>
                             <FormControl>
                               <div className="space-y-2 pl-4">
-                                <label className="flex items-center space-x-2">
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
                                     type="radio"
                                     value="visa-holder"
                                     checked={field.value === "visa-holder"}
                                     onChange={() => field.onChange("visa-holder")}
+                                    className="cursor-pointer"
                                   />
                                   <span>I am a visa holder.</span>
                                 </label>
-                                <label className="flex items-center space-x-2">
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
                                     type="radio"
                                     value="uk-national"
                                     checked={field.value === "uk-national"}
                                     onChange={() => field.onChange("uk-national")}
+                                    className="cursor-pointer"
                                   />
                                   <span>I am a UK national/resident with settled status in the UK.</span>
                                 </label>
-                                <label className="flex items-center space-x-2">
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
                                     type="radio"
                                     value="other-status"
                                     checked={field.value === "other-status"}
                                     onChange={() => field.onChange("other-status")}
+                                    className="cursor-pointer"
                                   />
                                   <span>Other status.</span>
                                 </label>
@@ -453,7 +461,7 @@ export function EmailDrafter() {
                                 <Input 
                                   type="text"
                                   placeholder="e.g., 1, 1.5, 2"
-                                  className="placeholder:text-gray-400 placeholder:italic"
+                                  className="placeholder:text-gray-400 placeholder:italic select-text"
                                   {...field}
                                   onChange={(e) => {
                                     const value = e.target.value;
@@ -481,10 +489,11 @@ export function EmailDrafter() {
                     </div>
 
                     <div className="flex gap-4">
-                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
                         Back
                       </Button>
-                      <Button type="button" onClick={handleNextSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handleNextSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
                         Continue
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -526,9 +535,9 @@ export function EmailDrafter() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Profession/Job Title</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
+                                                          <FormControl>
+                                <Input {...field} className="select-text" />
+                              </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -546,7 +555,7 @@ export function EmailDrafter() {
                               <FormControl>
                                 <Input 
                                   placeholder="e.g., 1111" 
-                                  className="placeholder:text-gray-400 placeholder:italic" 
+                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
                                   maxLength={4}
                                   {...field}
                                   onChange={(e) => {
@@ -594,7 +603,7 @@ export function EmailDrafter() {
                             <FormControl>
                               <Input
                                 placeholder="Please provide an approximate."
-                                className="placeholder:text-gray-400 placeholder:italic"
+                                className="placeholder:text-gray-400 placeholder:italic select-text"
                                 {...field}
                                 onChange={(e) => {
                                 const value = e.target.value;
@@ -621,10 +630,11 @@ export function EmailDrafter() {
                     </div>
 
                     <div className="flex gap-4">
-                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
                         Back
                       </Button>
-                      <Button type="button" onClick={handleNextSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handleNextSection} className="flex-1 hover:bg-gray-200">
                         Continue
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -713,7 +723,7 @@ export function EmailDrafter() {
                               <FormControl>
                                 <Input 
                                   placeholder="e.g., 5" 
-                                  className="placeholder:text-gray-400 placeholder:italic" 
+                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
                                   {...field}
                                   onChange={(e) => {
                                     const value = e.target.value;
@@ -749,7 +759,7 @@ export function EmailDrafter() {
                               <FormControl>
                                 <Input 
                                   placeholder="e.g., 10" 
-                                  className="placeholder:text-gray-400 placeholder:italic" 
+                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
                                   {...field}
                                   onChange={(e) => {
                                     const value = e.target.value;
@@ -776,10 +786,11 @@ export function EmailDrafter() {
                     </div>
 
                     <div className="flex gap-4">
-                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
                         Back
                       </Button>
-                      <Button type="button" onClick={handleNextSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handleNextSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
                         Continue
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -801,17 +812,14 @@ export function EmailDrafter() {
                             <FormLabel>
                               What are your top concerns about the immigration white paper? *
                             </FormLabel>
-                            <FormDescription>
-                              Feel free to write in the most suitable ways; bullet points, short sentences, full paragraphs, another language, anything works!
-                            </FormDescription>
                             <FormControl>
                               <Textarea
                                 placeholder={
                                   watchWhyWriting === "employer"
-                                    ? "Please describe how the immigration changes might affect your business operations, hiring plans, or company growth..."
-                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community..."
+                                    ? "Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, anything works!\n\nPlease describe how the immigration changes might affect your business operations, hiring plans, or company growth..."
+                                    : "Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, anything works!\n\nPlease describe how the immigration changes will affect you (professionally and personally), your family, or your community..."
                                 }
-                                className="min-h-[120px] placeholder:italic placeholder:text-gray-400"
+                                className="min-h-[120px] placeholder:italic placeholder:text-gray-400 select-text"
                                 {...field}
                               />
                             </FormControl>
@@ -819,13 +827,62 @@ export function EmailDrafter() {
                           </FormItem>
                         )}
                       />
+
+
+                      <div>
+                        <Button 
+                          type="button"
+                          variant="ghost" 
+                          className="justify-between p-2 h-auto hover:bg-gray-200 cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setIsProTipsOpen(!isProTipsOpen);
+                          }}
+                        >
+                          <span className="flex items-center gap-2">
+                            <Info className="h-4 w-4" />
+                            Pro Tips
+                          </span>
+                          <ChevronDown className={`h-4 w-4 transition-transform ${isProTipsOpen ? 'rotate-180' : ''}`} />
+                        </Button>
+                        
+                        {isProTipsOpen && (
+                          <div className="px-4 pt-4">
+                            {watchWhyWriting === "employer" ? (
+                              <div className="space-y-2 text-sm">
+                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                  <li>Focus on specific business impacts like hiring delays, skill shortages, or project timelines.</li>
+                                  <li>Mention concrete numbers if possible (e.g., "We need 5 software developers").</li>
+                                  <li>Explain how this affects your company's growth and contribution to the UK economy.</li>
+                                  <li>Provide insights on how the rule change will affect your industry.</li>
+                                  <li>Share any positive experiences with current visa holders in your team.</li>
+                                </ul>
+                              </div>
+                            ) : (
+                              <div className="space-y-2 text-sm">
+                                <p className="font-medium">Mention specific information, including:</p>
+                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                  <li>Your living experience in the UK and/or personal journey in obtaining visas.</li>
+                                  <li>Your contributions to the community (work, volunteering, taxes paid).</li>
+                                  <li>Any specific skills or expertise you bring to the UK.</li>
+                                  <li>How these changes would affect you, your family, or your partner.</li>
+                                  <li>How these changes affect your short-term and long-term plans.</li>
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      
                     </div>
 
                     <div className="flex gap-4">
-                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
                         Back
                       </Button>
-                      <Button type="button" onClick={handleNextSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handleNextSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
                         Continue
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -854,9 +911,9 @@ export function EmailDrafter() {
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
-                              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                              <Checkbox checked={field.value} onCheckedChange={field.onChange} className="cursor-pointer" />
                             </FormControl>
-                            <div className="space-y-1 leading-none">
+                            <div className="space-y-1 leading-none cursor-pointer select-text">
                               <FormLabel>Help with research (optional)</FormLabel>
                               <FormDescription>
                                 Allow us to save additional data (age, income, profession, concerns) to help with
@@ -879,10 +936,10 @@ export function EmailDrafter() {
                     </div>
 
                     <div className="flex gap-4">
-                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1">
+                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
                         Back
                       </Button>
-                      <Button type="submit" className="flex-1" disabled={isGenerating}>
+                      <Button type="submit" variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" disabled={isGenerating}>
                         {isGenerating ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -911,11 +968,11 @@ export function EmailDrafter() {
                   recipient="Your Member of Parliament"
                   subject="Concerns about the Immigration White Paper"
                 />
-                <div className="flex justify-between mt-4">
-                  <Button variant="outline" onClick={() => setActiveTab("input")}>
+                <div className="flex gap-4 mt-4">
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("input")}>
                     Back to Details
                   </Button>
-                  <Button onClick={handleSaveAndContinue} disabled={isSending}>
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={handleSaveAndContinue} disabled={isSending}>
                     {isSending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -950,7 +1007,7 @@ export function EmailDrafter() {
           <div className="text-sm text-muted-foreground">
             {emailHistory.length > 0 ? `${emailHistory.length} emails prepared` : "No emails prepared yet"}
           </div>
-          <Button variant="outline" onClick={handleExport} disabled={emailHistory.length === 0}>
+          <Button variant="outline" className="hover:bg-gray-200 cursor-pointer" onClick={handleExport} disabled={emailHistory.length === 0}>
             <Download className="mr-2 h-4 w-4" />
             Export Data
           </Button>
