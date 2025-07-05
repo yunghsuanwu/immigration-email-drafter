@@ -153,3 +153,18 @@ a {
 a:hover {
   color: var(--hover-orange);
 }
+
+.custom-green-link {
+  color: var(--accent);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.custom-green-link:hover {
+  color: var(--headline-primary);
+}
+
+/* Custom placeholder styling */
+.placeholder-gray-italic::placeholder {
+  color: #374151; /* text-gray-700 */
+  font-style: italic;
+}

@@ -2,15 +2,20 @@ export type FormData = {
   postalCode: string
   constituentName: string
   constituentEmail: string
-  writingFor: "myself" | "someone-else"
-  age: string
-  residentialStatus: "permanent-resident" | "visa-holder"
+  whyWriting: "visa-employee" | "employer" | "other-reasons"
+  residentialStatus: "uk-national" | "visa-holder" | "others"
+  residentialStatusOther?: string
   visaType?: string
-  visaSituation?: string
-  yearlyIncome: string
+  yearsInUK?: string
+  yearlyIncome?: string
   profession?: string
   annualTaxContribution?: string
-  yearsInUK?: string
+  // Employer-specific fields
+  industry?: string
+  companySize?: string
+  yearlyRevenue?: string
+  currentOverseasEmployees?: string
+  plannedOverseasHires?: string
   immigrationConcerns: string
   optInDataCollection: boolean
 }
