@@ -28,7 +28,7 @@ export function NavBar() {
               Email History
             </Link>
           </Button>*/}
-          <Link href="www.notastranger.org" className="flex items-center space-x-2">
+          <Link href="https://www.notastranger.org" className="flex items-center space-x-2">
             <Image
               src="/images/logo/not_a_stranger_1100x220_words_wlogo_temp.png"
               alt="Not A Stranger Logo"
