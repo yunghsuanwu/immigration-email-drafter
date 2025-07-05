@@ -1,9 +1,11 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Mail, History, Users } from "lucide-react"
+{/*import { Button } from "@/components/ui/button"*/}
+{/*import { Mail, History, Users } from "lucide-react"*/}
+import { Mail } from "lucide-react"
 
 export function NavBar() {
   const pathname = usePathname()
@@ -12,11 +14,11 @@ export function NavBar() {
     <nav className="border-b">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
-          <Users className="h-6 w-6 mr-2" />
-          <span className="font-bold text-lg">MP Immigration Contact Tool</span>
+          <Mail className="h-6 w-6 mr-2 text-[#4a90e2]" />
+          <span className="font-bold text-lg text-[#4a90e2]">RE:Immigration Email Drafter</span>
         </div>
-        <div className="flex gap-2">
-          <Button variant={pathname === "/" ? "default" : "ghost"} size="sm" asChild>
+        <div className="flex justify-end gap-2">
+          {/*<Button variant={pathname === "/" ? "default" : "ghost"} size="sm" asChild>
             <Link href="/">
               <Mail className="h-4 w-4 mr-2" />
               Write to MP
@@ -27,7 +29,16 @@ export function NavBar() {
               <History className="h-4 w-4 mr-2" />
               Email History
             </Link>
-          </Button>
+          </Button>*/}
+          <Link href="www.notastranger.org" className="flex items-center space-x-2">
+            <Image
+              src="/images/logo/not_a_stranger_1100x220_words_wlogo_temp.png"
+              alt="Not A Stranger Logo"
+              width={1100}
+              height={220}
+              className="h-10 w-auto"
+            />
+          </Link>
         </div>
       </div>
     </nav>
