@@ -10,12 +10,12 @@ export function CallToAction() {
            rel="noopener noreferrer"
            className="underline"
           >
-           read what's changing
+           read what&apos;s changing
           </a>
           ), we are mobilizing those who will be affected or know someone that will to take a simple yet signicant action: Write to your Member of Parliament.
       </p>
       <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
-        The immigration rule change is subject to your MP's approval via voting. Before they cast their vote, tell them your story and show them the impact of the changes.
+        The immigration rule change is subject to your MP&apos;s approval via voting. Before they cast their vote, tell them your story and show them the impact of the changes.
       </p>
       <p className="font-bold text-muted-foreground max-w-2xl mx-auto mt-4">
         Tell them you are not a stranger. 

@@ -11,13 +11,10 @@ export async function saveUserSubmission(data: FormData, emailContent: string): 
     postal_code: data.postalCode,
     residency_status: data.residentialStatus,
     visa_type: data.visaType || null,
-    visa_situation: data.visaSituation || null,
     opted_in: data.optInDataCollection,
     email_content: emailContent,
     // Only include additional data if user opted in
     ...(data.optInDataCollection && {
-      age: data.age,
-      writing_for: data.writingFor,
       yearly_income: data.yearlyIncome,
       profession: data.profession || null,
       annual_tax_contribution: data.annualTaxContribution || null,

@@ -15,10 +15,7 @@ export async function generateMPEmail(data: FormData): Promise<string> {
 
     Constituent Details:
     - Name: ${data.constituentName}
-    - Age: ${data.age}
-    - Writing for: ${data.writingFor === "myself" ? "themselves" : "someone else"}
-    - Residential Status: ${data.residentialStatus === "permanent-resident" ? "Permanent resident/UK national" : "Visa holder"}
-    ${data.visaSituation ? `- Visa Situation: ${data.visaSituation}` : ""}
+    - Residential Status: ${data.residentialStatus === "uk-national" ? "UK national/resident" : "Visa holder"}
     - Yearly Income: ${data.yearlyIncome}
     ${data.profession ? `- Profession: ${data.profession}` : ""}
     ${data.annualTaxContribution ? `- Annual Tax Contribution: £${data.annualTaxContribution}` : ""}

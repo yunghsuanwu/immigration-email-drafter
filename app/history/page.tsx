@@ -28,8 +28,8 @@ export default function HistoryPage() {
         if (storedHistory) {
           setEmailHistory(JSON.parse(storedHistory))
         }
-      } catch (error) {
-        console.error("Error loading history:", error)
+      } catch {
+        console.error("Error loading history")
       } finally {
         setIsLoading(false)
       }
@@ -45,11 +45,10 @@ export default function HistoryPage() {
         title: "Data exported",
         description: "Email history has been exported as CSV.",
       })
-    } catch (error) {
+    } catch {
       toast({
         title: "Export failed",
         description: "Failed to export data. Please try again.",
-        variant: "destructive",
       })
     }
   }

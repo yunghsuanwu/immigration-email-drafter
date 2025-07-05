@@ -10,14 +10,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Loader2, Send, Download, Edit, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
+import { Loader2, Send, Download, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
 import { EmailEditor } from "@/components/email-editor"
 import { RepresentativeSelector } from "@/components/representative-selector"
 import { generateMPEmail } from "@/lib/generate-mp-email"
 import { saveUserSubmission } from "@/lib/database"
 import { exportData } from "@/lib/export-data"
 import { useToast } from "@/hooks/use-toast"
-import { useMobile } from "@/hooks/use-mobile"
+
 import type { FormData } from "@/types/form-data"
 import { salaryBrackets, visaTypes, industryTypes, revenueBrackets, companySizes } from "@/types/form-data"
 
@@ -48,8 +48,12 @@ export function EmailDrafter() {
   const [submissionId, setSubmissionId] = useState("")
   const [emailHistory, setEmailHistory] = useState<EmailData[]>([])
   const [isProTipsOpen, setIsProTipsOpen] = useState(false)
+  const [yearsInUKInvalid, setYearsInUKInvalid] = useState(false)
+  const [socInvalid, setSocInvalid] = useState(false)
+  const [annualTaxInvalid, setAnnualTaxInvalid] = useState(false)
+  const [currentOverseasInvalid, setCurrentOverseasInvalid] = useState(false)
+  const [plannedHiresInvalid, setPlannedHiresInvalid] = useState(false)
   const { toast } = useToast()
-  const isMobile = useMobile()
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -146,13 +150,13 @@ export function EmailDrafter() {
           description: "Your email to your MP has been generated successfully.",
         })
       }
-    } catch (error) {
-      console.error("Email generation error:", error)
-      toast({
-        title: "Generation failed",
-        description: error instanceof Error ? error.message : "Failed to generate email. Please try again.",
-      })
-    } finally {
+          } catch {
+        console.error("Email generation error")
+        toast({
+          title: "Generation failed",
+          description: "Failed to generate email. Please try again.",
+        })
+      } finally {
       setIsGenerating(false)
     }
   }
@@ -170,11 +174,10 @@ export function EmailDrafter() {
       })
 
       setActiveTab("representatives")
-    } catch (error) {
+    } catch {
       toast({
         title: "Save failed",
         description: "Failed to save your information. Please try again.",
-        variant: "destructive",
       })
     } finally {
       setIsSending(false)
@@ -195,8 +198,8 @@ export function EmailDrafter() {
       const history = existingHistory ? JSON.parse(existingHistory) : []
       history.unshift(emailData)
       localStorage.setItem("emailHistory", JSON.stringify(history))
-    } catch (error) {
-      console.error("Error saving to localStorage:", error)
+    } catch {
+      console.error("Error saving to localStorage")
     }
 
     setEmailHistory((prev) => [emailData, ...prev])
@@ -221,11 +224,10 @@ export function EmailDrafter() {
         title: "Data exported",
         description: "Email data has been exported as CSV.",
       })
-    } catch (error) {
+    } catch {
       toast({
         title: "Export failed",
         description: "Failed to export data. Please try again.",
-        variant: "destructive",
       })
     }
   }
@@ -298,7 +300,7 @@ export function EmailDrafter() {
                                                           <FormControl>
                                 <Input placeholder="e.g., SW1A 1AA" className="placeholder:text-gray-400 placeholder:italic select-text" {...field} />
                               </FormControl>
-                            <FormDescription className="text-gray-400 italic">We'll use this to find your MP and local councilors.</FormDescription>
+                            <FormDescription className="text-gray-400 italic">We&apos;ll use this to find your MP and local councilors.</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -451,40 +453,36 @@ export function EmailDrafter() {
                       <FormField
                         control={form.control}
                         name="yearsInUK"
-                        render={({ field }) => {
-                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
-                          
-                          return (
-                            <FormItem>
-                              <FormLabel>How long have you been in the UK? (Please answer in years)</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="text"
-                                  placeholder="e.g., 1, 1.5, 2"
-                                  className="placeholder:text-gray-400 placeholder:italic select-text"
-                                  {...field}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    // Only allow digits 0-9 and decimal point
-                                    if (value === '' || /^[0-9.]*$/.test(value)) {
-                                      field.onChange(value);
-                                      setHasInvalidInput(false);
-                                    } else {
-                                      setHasInvalidInput(true);
-                                    }
-                                  }}
-                                />
-                              </FormControl>
-                              {hasInvalidInput && (
-                                <p className="text-red-500 text-sm mt-1">
-                                  Please only enter digits 0-9 and a decimal point.
-                                </p>
-                              )}
-                              <FormDescription className="text-gray-400 italic">Optional - helps demonstrate your connection to the UK</FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          );
-                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>How long have you been in the UK? (Please answer in years)</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="text"
+                                placeholder="e.g., 1, 1.5, 2"
+                                className="placeholder:text-gray-400 placeholder:italic select-text"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  // Only allow digits 0-9 and decimal point
+                                  if (value === '' || /^[0-9.]*$/.test(value)) {
+                                    field.onChange(value);
+                                    setYearsInUKInvalid(false);
+                                  } else {
+                                    setYearsInUKInvalid(true);
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                            {yearsInUKInvalid && (
+                              <p className="text-red-500 text-sm mt-1">
+                                Please only enter digits 0-9 and a decimal point.
+                              </p>
+                            )}
+                            <FormDescription className="text-gray-400 italic">Optional - helps demonstrate your connection to the UK</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
 
@@ -546,58 +544,51 @@ export function EmailDrafter() {
                       <FormField
                         control={form.control}
                         name="SOC"
-                        render={({ field }) => {
-                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
-
-                          return (
-                            <FormItem>
-                              <FormLabel>Standard Occupational Code (SOC)</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder="e.g., 1111" 
-                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
-                                  maxLength={4}
-                                  {...field}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    // Only allow digits and limit to 4 characters
-                                    if (value === '' || /^\d{0,4}$/.test(value)) {
-                                      field.onChange(value);
-                                      setHasInvalidInput(false);
-                                    } else {
-                                      setHasInvalidInput(true);
-                                    }
-                                  }}
-                                />
-                              </FormControl>
-                              {hasInvalidInput && (
-                                <p className="text-red-500 text-sm mt-1">
-                                  Please only input your four-digit SOC.
-                                </p>
-                              )}
-                              <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
-                                <a
-                                  href="https://www.gov.uk/government/publications/skilled-worker-visa-eligible-occupations/skilled-worker-visa-eligible-occupations-and-codes"
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="underline"
-                                >
-                                  official CASCOT tool
-                                </a>.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          );
-                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Standard Occupational Code (SOC)</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="e.g., 1111" 
+                                className="placeholder:text-gray-400 placeholder:italic select-text" 
+                                maxLength={4}
+                                {...field}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  // Only allow digits and limit to 4 characters
+                                  if (value === '' || /^\d{0,4}$/.test(value)) {
+                                    field.onChange(value);
+                                    setSocInvalid(false);
+                                  } else {
+                                    setSocInvalid(true);
+                                  }
+                                }}
+                              />
+                            </FormControl>
+                            {socInvalid && (
+                              <p className="text-red-500 text-sm mt-1">
+                                Please only input your four-digit SOC.
+                              </p>
+                            )}
+                            <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
+                              <a
+                                href="https://www.gov.uk/government/publications/skilled-worker-visa-eligible-occupations/skilled-worker-visa-eligible-occupations-and-codes"
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="underline"
+                              >
+                                official CASCOT tool
+                              </a>.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
 
                       <FormField
                         control={form.control}
                         name="annualTaxContribution"
-                        render={({ field }) => {
-                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
-
-                          return (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel>Annual Tax Contribution (£)</FormLabel>
                             <FormControl>
@@ -610,22 +601,21 @@ export function EmailDrafter() {
                                 //only allow digits and decimal points.
                                   if (value === '' || /^[0-9.]*$/.test(value)) {
                                     field.onChange(value);
-                                    setHasInvalidInput(false);
+                                    setAnnualTaxInvalid(false);
                                   } else {
-                                    setHasInvalidInput(true);
+                                    setAnnualTaxInvalid(true);
                                   }
                                 }}
                               />
                             </FormControl>
-                            {hasInvalidInput && (
+                            {annualTaxInvalid && (
                               <p className="text-red-500 text-sm mt-1">
                                 Please only enter digits 0-9 and a decimal point.
                               </p>
                             )}
                             <FormMessage />
                           </FormItem>
-                          );
-                        }}
+                        )}
                       />
                     </div>
 
@@ -715,73 +705,67 @@ export function EmailDrafter() {
                       <FormField
                         control={form.control}
                         name="currentOverseasEmployees"
-                        render={({ field }) => {
-                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
-                          return(
-                            <FormItem>
-                              <FormLabel>How many employees do you have are visa holders right now?</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder="e.g., 5" 
-                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
-                                  {...field}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    //only allow digits.
-                                      if (value === '' || /^[0-9]*$/.test(value)) {
-                                        field.onChange(value);
-                                        setHasInvalidInput(false);
-                                      } else {
-                                        setHasInvalidInput(true);
-                                      }
-                                    }}
-                                />
-                              </FormControl>
-                              {hasInvalidInput && (
-                              <p className="text-red-500 text-sm mt-1">
-                                Please only enter digits 0-9.
-                              </p>
-                              )}
-                              <FormMessage />
-                            </FormItem>
-                          );
-                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>How many employees do you have are visa holders right now?</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="e.g., 5" 
+                                className="placeholder:text-gray-400 placeholder:italic select-text" 
+                                {...field}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  //only allow digits.
+                                    if (value === '' || /^[0-9]*$/.test(value)) {
+                                      field.onChange(value);
+                                      setCurrentOverseasInvalid(false);
+                                    } else {
+                                      setCurrentOverseasInvalid(true);
+                                    }
+                                  }}
+                              />
+                            </FormControl>
+                            {currentOverseasInvalid && (
+                            <p className="text-red-500 text-sm mt-1">
+                              Please only enter digits 0-9.
+                            </p>
+                            )}
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
 
                       <FormField
                         control={form.control}
                         name="plannedOverseasHires"
-                        render={({ field }) => {
-                          const [hasInvalidInput, setHasInvalidInput] = useState(false);
-                          return(
-                            <FormItem>
-                              <FormLabel>How many overseas workers are you considering hiring?</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder="e.g., 10" 
-                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
-                                  {...field}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    //only allow digits.
-                                      if (value === '' || /^[0-9]*$/.test(value)) {
-                                        field.onChange(value);
-                                        setHasInvalidInput(false);
-                                      } else {
-                                        setHasInvalidInput(true);
-                                      }
-                                    }}
-                                />
-                              </FormControl>
-                              {hasInvalidInput && (
-                              <p className="text-red-500 text-sm mt-1">
-                                Please only enter digits 0-9.
-                              </p>
-                              )}
-                              <FormMessage />
-                            </FormItem>
-                          );
-                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>How many overseas workers are you considering hiring?</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="e.g., 10" 
+                                className="placeholder:text-gray-400 placeholder:italic select-text" 
+                                {...field}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  //only allow digits.
+                                    if (value === '' || /^[0-9]*$/.test(value)) {
+                                      field.onChange(value);
+                                      setPlannedHiresInvalid(false);
+                                    } else {
+                                      setPlannedHiresInvalid(true);
+                                    }
+                                  }}
+                              />
+                            </FormControl>
+                            {plannedHiresInvalid && (
+                            <p className="text-red-500 text-sm mt-1">
+                              Please only enter digits 0-9.
+                            </p>
+                            )}
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
 
@@ -853,8 +837,8 @@ export function EmailDrafter() {
                               <div className="space-y-2 text-sm">
                                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                                   <li>Focus on specific business impacts like hiring delays, skill shortages, or project timelines.</li>
-                                  <li>Mention concrete numbers if possible (e.g., "We need 5 software developers").</li>
-                                  <li>Explain how this affects your company's growth and contribution to the UK economy.</li>
+                                  <li>Mention concrete numbers if possible (e.g., &quot;We need 5 software developers&quot;).</li>
+                                  <li>Explain how this affects your company&apos;s growth and contribution to the UK economy.</li>
                                   <li>Provide insights on how the rule change will affect your industry.</li>
                                   <li>Share any positive experiences with current visa holders in your team.</li>
                                 </ul>
@@ -995,7 +979,6 @@ export function EmailDrafter() {
               <RepresentativeSelector
                 postalCode={form.getValues("postalCode")}
                 submissionId={submissionId}
-                emailContent={editedEmail}
                 onComplete={handleComplete}
               />
             )}

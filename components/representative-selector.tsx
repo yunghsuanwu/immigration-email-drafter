@@ -13,14 +13,12 @@ import { useToast } from "@/hooks/use-toast"
 interface RepresentativeSelectorProps {
   postalCode: string
   submissionId: string
-  emailContent: string
   onComplete: () => void
 }
 
 export function RepresentativeSelector({
   postalCode,
   submissionId,
-  emailContent,
   onComplete,
 }: RepresentativeSelectorProps) {
   const [representatives, setRepresentatives] = useState<Representative[]>([])
@@ -34,11 +32,10 @@ export function RepresentativeSelector({
       try {
         const reps = await getRepresentativesByPostalCode(postalCode)
         setRepresentatives(reps)
-      } catch (error) {
+      } catch {
         toast({
           title: "Error loading representatives",
           description: "Failed to load MPs and councilors for your area.",
-          variant: "destructive",
         })
       } finally {
         setIsLoading(false)
@@ -57,7 +54,6 @@ export function RepresentativeSelector({
       toast({
         title: "No representatives selected",
         description: "Please select at least one representative to contact.",
-        variant: "destructive",
       })
       return
     }
@@ -74,11 +70,10 @@ export function RepresentativeSelector({
       })
 
       onComplete()
-    } catch (error) {
+    } catch {
       toast({
         title: "Error preparing emails",
         description: "Failed to prepare emails. Please try again.",
-        variant: "destructive",
       })
     } finally {
       setIsSending(false)
@@ -101,7 +96,7 @@ export function RepresentativeSelector({
         <CardHeader>
           <CardTitle>No Representatives Found</CardTitle>
           <CardDescription>
-            We couldn't find any MPs or councilors for postal code {postalCode}. Please check your postal code or
+            We couldn&apos;t find any MPs or councilors for postal code {postalCode}. Please check your postal code or
             contact us to add representatives for your area.
           </CardDescription>
         </CardHeader>
@@ -123,7 +118,7 @@ export function RepresentativeSelector({
         <CardHeader>
           <CardTitle>Select Representatives to Contact</CardTitle>
           <CardDescription>
-            Choose which MPs and local councilors you'd like to send your email to for postal code {postalCode}.
+            Choose which MPs and local councilors you&apos;d like to send your email to for postal code {postalCode}.
           </CardDescription>
         </CardHeader>
       </Card>
