@@ -2,13 +2,11 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
 {/*import { Button } from "@/components/ui/button"*/}
 {/*import { Mail, History, Users } from "lucide-react"*/}
 import { Mail } from "lucide-react"
 
 export function NavBar() {
-  const pathname = usePathname()
 
   return (
     <nav className="border-b">
