@@ -124,6 +124,7 @@ export function EmailDrafter() {
 
   const onSubmit = async (data: FormData) => {
     setIsGenerating(true)
+    console.log("Form data submitted:", data)
     try {
       let email: string
       try {

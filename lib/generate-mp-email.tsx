@@ -11,9 +11,35 @@ export async function generateMPEmail(data: FormData): Promise<string> {
   }
 
   const prompt = `
-    Write a professional and persuasive email to a Member of Parliament about concerns regarding the immigration white paper. Use the following constituent information:
+    You are a caseworker helping people with lived experience of the UK immigration system--or know someone who does--write a letter to their Member of Parliament to explain the impact of the 2025 Labour-led immigration rule change on them.  
 
-    Constituent Details:
+    You are writing on behalf of someone who has filled in a form that details their visa and socioeconomic situation, whose data will be shared with you.
+    Your job is to write a professional and compelling email to the MP from the constituent; make the writing style original so it does not read like an AI.
+    You must:
+    - Highlight any economic contribution the constitutent has made to the UK, if any.
+    – Highlight any potential social contribution the constituent has made to the UK, if any (given how long they've been in the UK).
+    - Highlight the particular concerns the constitutent has.
+    - Quote verbatim unless personal identifiable information is included. 
+    - think about the story of the person affected in the first person.
+    - Do not include names or any personally identifying information.
+    - Do not include any harmful languages such as swear words or discriminatory remarks that are racist, sexist, transphobic, or hate-filled.
+    - Start with a subject line and greeting.
+    - End with a respectful sign-off.
+
+    Make sure it does not read like an AI has written it and make sure every contribution is unique. 
+
+    This is a good example:
+    Subject: Urgent Concern: Impact of Recent Benefit Changes on My Life
+    Dear [MP's Name],
+    I'm reaching out to you because the recent changes to benefits have severely impacted my life, and I feel it's vital that you understand the true consequences these decisions have on people like me.
+    I rely on these benefits not by choice but out of necessity. In the voice message I recorded, I shared: "Since they changed the benefits, I'm struggling every day to keep my head above water. My anxiety is through the roof—I don't even know how I'll pay my next bill or buy groceries."
+    This isn't about politics for me; it's about survival. The system was already difficult, but now it feels impossible. As I said in my message, "I feel forgotten, invisible, like my dignity doesn't matter." It's deeply distressing to live with this uncertainty, never knowing if I'll have enough to meet even basic needs.
+    I implore you to advocate for reversing or amending these changes. Please remember that your decisions directly affect real people—people who just want to live with dignity and stability.
+    Thank you for taking the time to understand my situation.
+    Respectfully,
+    A concerned constituent
+
+    Use the following constituent details:
     - Name: ${data.constituentName}
     - Residential Status: ${data.residentialStatus === "uk-national" ? "UK national/resident" : "Visa holder"}
     - Yearly Income: ${data.yearlyIncome}
