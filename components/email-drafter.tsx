@@ -53,6 +53,7 @@ export function EmailDrafter() {
   const [annualTaxInvalid, setAnnualTaxInvalid] = useState(false)
   const [currentOverseasInvalid, setCurrentOverseasInvalid] = useState(false)
   const [plannedHiresInvalid, setPlannedHiresInvalid] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const { toast } = useToast()
 
   const form = useForm<FormData>({
@@ -235,7 +236,7 @@ export function EmailDrafter() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>RE:Immigration Email Drafter</CardTitle>
+        <CardTitle>Re:Immigration Email Drafter</CardTitle>
         <CardDescription>
           Answer a few questions to generate a personalised email. We only ask the essentials for your MP to know about your situation.
         </CardDescription>
@@ -298,9 +299,17 @@ export function EmailDrafter() {
                           <FormItem>
                             <FormLabel>Postal Code *</FormLabel>
                                                           <FormControl>
-                                <Input placeholder="e.g., SW1A 1AA" className="placeholder:text-gray-400 placeholder:italic select-text" {...field} />
+                                <Input 
+                                  placeholder="e.g., SW1A 1AA" 
+                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
+                                  {...field}
+                                  onFocus={() => setIsFocused(true)}
+                                  onBlur={() => setIsFocused(false)}
+                                />
                               </FormControl>
-                            <FormDescription className="text-gray-400 italic">We&apos;ll use this to find your MP and local councilors.</FormDescription>
+                              {isFocused && (
+                                <FormDescription className="text-gray-400 italic">We&apos;ll use this to find your MP and local councilors.</FormDescription>
+                              )}
                             <FormMessage />
                           </FormItem>
                         )}
@@ -472,6 +481,8 @@ export function EmailDrafter() {
                                     setYearsInUKInvalid(true);
                                   }
                                 }}
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => setIsFocused(false)}
                               />
                             </FormControl>
                             {yearsInUKInvalid && (
@@ -479,7 +490,9 @@ export function EmailDrafter() {
                                 Please only enter digits 0-9 and a decimal point.
                               </p>
                             )}
-                            <FormDescription className="text-gray-400 italic">Optional - helps demonstrate your connection to the UK</FormDescription>
+                            {isFocused && (
+                              <FormDescription className="text-gray-400 italic">Optional - helps demonstrate your connection to the UK</FormDescription>
+                            )}
                             <FormMessage />
                           </FormItem>
                         )}
@@ -504,7 +517,7 @@ export function EmailDrafter() {
                   <div className="space-y-12">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Economic Information</h3>
-                      <p className="text-sm text-muted-foreground">This section is completely optional. You can skip it if you prefer.</p>
+                      <p className="text-sm text-muted-foreground">This section is completely optional. You can skip if preferred.</p>
                       
                       <FormField
                         control={form.control}
@@ -533,7 +546,7 @@ export function EmailDrafter() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Profession/Job Title</FormLabel>
-                                                          <FormControl>
+                            <FormControl>
                                 <Input {...field} className="select-text" />
                               </FormControl>
                             <FormMessage />
@@ -563,6 +576,8 @@ export function EmailDrafter() {
                                     setSocInvalid(true);
                                   }
                                 }}
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => setIsFocused(false)}
                               />
                             </FormControl>
                             {socInvalid && (
@@ -570,7 +585,8 @@ export function EmailDrafter() {
                                 Please only input your four-digit SOC.
                               </p>
                             )}
-                            <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
+                            {isFocused && (
+                              <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
                               <a
                                 href="https://www.gov.uk/government/publications/skilled-worker-visa-eligible-occupations/skilled-worker-visa-eligible-occupations-and-codes"
                                 target="_blank" 
@@ -580,6 +596,7 @@ export function EmailDrafter() {
                                 official CASCOT tool
                               </a>.
                             </FormDescription>
+                            )}
                             <FormMessage />
                           </FormItem>
                         )}
@@ -593,7 +610,6 @@ export function EmailDrafter() {
                             <FormLabel>Annual Tax Contribution (£)</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Please provide an approximate."
                                 className="placeholder:text-gray-400 placeholder:italic select-text"
                                 {...field}
                                 onChange={(e) => {
@@ -606,12 +622,19 @@ export function EmailDrafter() {
                                     setAnnualTaxInvalid(true);
                                   }
                                 }}
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => setIsFocused(false)}
                               />
                             </FormControl>
                             {annualTaxInvalid && (
                               <p className="text-red-500 text-sm mt-1">
                                 Please only enter digits 0-9 and a decimal point.
                               </p>
+                            )}
+                            {isFocused && (
+                              <FormDescription className="text-gray-400 italic">
+                                Please provide an approximate.
+                              </FormDescription>
                             )}
                             <FormMessage />
                           </FormItem>

@@ -13,7 +13,7 @@ export function NavBar() {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
           <Mail className="h-6 w-6 mr-2 text-[#4a90e2]" />
-          <span className="font-bold text-lg text-[#4a90e2]">RE:Immigration Email Drafter</span>
+          <span className="font-bold text-lg text-[#4a90e2]">Re:Immigration Email Drafter</span>
         </div>
         <div className="flex justify-end gap-2">
           {/*<Button variant={pathname === "/" ? "default" : "ghost"} size="sm" asChild>
