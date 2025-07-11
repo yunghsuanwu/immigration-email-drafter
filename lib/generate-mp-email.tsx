@@ -10,60 +10,67 @@ export async function generateMPEmail(data: FormData): Promise<string> {
     throw new Error("OpenAI API key is not configured")
   }
 
-  const prompt = `
-    You are a caseworker helping people with lived experience of the UK immigration system--or know someone who does--write a letter to their Member of Parliament to explain the impact of the 2025 Labour-led immigration rule change on them.  
+  const details: string[] = [
+    `- Name: ${data.constituentName}`
+  ];
 
-    You are writing on behalf of someone who has filled in a form that details their visa and socioeconomic situation, whose data will be shared with you.
+  // Handle residential status with all possible cases
+  if (data.residentialStatus === "uk-national") {
+    details.push(`- Residential Status: UK national/resident`);
+  } else if (data.residentialStatus === "visa-holder") {
+    let visaLine = `- Residential Status: Visa holder`;
+    if (data.visaType) visaLine += ` (${data.visaType})`;
+    details.push(visaLine);
+  } else if (data.residentialStatus === "other-status") {
+    let otherLine = `- Residential Status: Other`;
+    if (data.residentialStatusOther) otherLine += ` (${data.residentialStatusOther})`;
+    details.push(otherLine);
+  }
+
+  if (data.yearlyIncome) details.push(`- Yearly Income: ${data.yearlyIncome}`);
+  if (data.profession) details.push(`- Profession: ${data.profession}`);
+  if (data.annualTaxContribution) details.push(`- Annual Tax Contribution: £${data.annualTaxContribution}`);
+  if (data.yearsInUK) details.push(`- Years in UK: ${data.yearsInUK}`);
+  if (data.SOC) details.push(`- SOC: ${data.SOC}`);
+
+  const prompt = `
+    You are helping people with lived experience of the UK immigration system--or know someone who does--write a letter to their Member of Parliament to explain the impact of the 2025 immigration rule change on them.  
+
+    You are writing on behalf of someone who has filled in a form about their residency status and socioeconomic situation, whose data will be shared with you.
     Your job is to write a professional and compelling email to the MP from the constituent; make the writing style original so it does not read like an AI.
     You must:
-    - Highlight any economic contribution the constitutent has made to the UK, if any.
-    – Highlight any potential social contribution the constituent has made to the UK, if any (given how long they've been in the UK).
-    - Highlight the particular concerns the constitutent has.
-    - Quote verbatim unless personal identifiable information is included. 
-    - think about the story of the person affected in the first person.
-    - Do not include names or any personally identifying information.
-    - Do not include any harmful languages such as swear words or discriminatory remarks that are racist, sexist, transphobic, or hate-filled.
-    - Start with a subject line and greeting.
+    – Write in standard British English regardless of the input language; translate if necessary. 
+    - Highlight the economic contribution the constitutent has made to the UK, if you're given any indication on this.
+    – Highlight the social contribution the constituent has made to the UK, if you're given any indication on this.
+    - Highlight the particular concerns the constitutent.
+    - Write in first person as the affected constituent and preserve their own voice.
+    - Do not include any harmful languages such as swear words or discriminatory remarks that are anti-immigrant, racist, sexist, transphobic, or hate-filled.
+    – Do not be overly verbose.
+    – Do not use bullet points.
+    - Start with a personalized subject line.
+    – Start with a greeting, e.g., "Dear [MP's title and name]".
     - End with a respectful sign-off.
+    – Check the grammar of the entire piece and make sure it follows standard British English.
 
     Make sure it does not read like an AI has written it and make sure every contribution is unique. 
 
     This is a good example:
-    Subject: Urgent Concern: Impact of Recent Benefit Changes on My Life
+    Subject: Urgent Concern: Impact of Recent Immigration Rule Change on My Life
     Dear [MP's Name],
-    I'm reaching out to you because the recent changes to benefits have severely impacted my life, and I feel it's vital that you understand the true consequences these decisions have on people like me.
-    I rely on these benefits not by choice but out of necessity. In the voice message I recorded, I shared: "Since they changed the benefits, I'm struggling every day to keep my head above water. My anxiety is through the roof—I don't even know how I'll pay my next bill or buy groceries."
-    This isn't about politics for me; it's about survival. The system was already difficult, but now it feels impossible. As I said in my message, "I feel forgotten, invisible, like my dignity doesn't matter." It's deeply distressing to live with this uncertainty, never knowing if I'll have enough to meet even basic needs.
-    I implore you to advocate for reversing or amending these changes. Please remember that your decisions directly affect real people—people who just want to live with dignity and stability.
-    Thank you for taking the time to understand my situation.
+    I hope this email finds you well. My name is Harry Pulson, and I am writing to you not only as a concerned constituent but also as a dedicated contributor to our community here in the UK. I have been residing in the UK for the past 3.5 years, during which I have worked diligently as a architect assistant, earning an annual income between £20,001 and £30,000. I take pride in my profession and actively contribute to the economy through an annual tax contribution of £4,564.
+    My primary concern stems from rapid changes in the field may threaten my job security. If the proposed immigration rule change makes securing new visa-sponsoring employment more difficult, I risk deportation despite having built a life here and contributed both economically and socially to the community.
+    Throughout my time in the UK, I have actively engaged with the local community, using my skills to entertain and bring joy to many while supporting local businesses and cultural events. I am eager to continue contributing to the UK's vibrant society, but the proposed immigration changes create uncertainty that puts both my future and contributions at risk.
+    I urge you to consider the impact these policy changes may have on individuals like myself who are committed to positive contributions. I request that you advocate for a more flexible and inclusive immigration framework that acknowledges the diverse skills of non-citizen residents and provides reasonable pathways to secure alternative employment without deportation threats for those vulnerable to technological displacement.
     Respectfully,
-    A concerned constituent
+    Harry Pulson
 
     Use the following constituent details:
-    - Name: ${data.constituentName}
-    - Residential Status: ${data.residentialStatus === "uk-national" ? "UK national/resident" : "Visa holder"}
-    - Yearly Income: ${data.yearlyIncome}
-    ${data.profession ? `- Profession: ${data.profession}` : ""}
-    ${data.annualTaxContribution ? `- Annual Tax Contribution: £${data.annualTaxContribution}` : ""}
-    ${data.yearsInUK ? `- Years in UK: ${data.yearsInUK}` : ""}
+    ${details.join('\n')}
     
     Immigration Concerns:
     ${data.immigrationConcerns}
 
-    Guidelines for the email:
-    1. Write in first person (even if writing for someone else, as advised)
-    2. Be respectful and professional
-    3. Start with a proper greeting to the MP
-    4. Introduce yourself as a constituent
-    5. Clearly state your concerns about the immigration white paper
-    6. Use the personal details to demonstrate your contribution to the UK (economic, social, etc.)
-    7. Make specific, reasonable requests for action
-    8. End with a polite closing requesting a response
-    9. Keep the tone constructive and solution-oriented
-    10. Make it personal and compelling while remaining factual
-
     The email should be approximately 300-500 words and structured with clear paragraphs.
-    Do not include the recipient address or signature block - just the body of the email.
   `
 
   try {
