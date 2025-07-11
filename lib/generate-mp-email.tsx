@@ -4,7 +4,15 @@ import { generateText } from "ai"
 import { openai } from "@ai-sdk/openai"
 import type { FormData } from "@/types/form-data"
 
-export async function generateMPEmail(data: FormData): Promise<string> {
+export async function generateMPEmail(data: FormData, mpInfo?: {
+  nameFullTitle?: string
+  nameAddressAs?: string
+  partyName?: string
+  membershipFrom?: string
+  email?: string | null
+  phone?: string
+  memberID?: string | number | null
+}): Promise<string> {
   // Check if API key is available
   if (!process.env.OPENAI_API_KEY) {
     throw new Error("OpenAI API key is not configured")
@@ -33,6 +41,9 @@ export async function generateMPEmail(data: FormData): Promise<string> {
   if (data.yearsInUK) details.push(`- Years in UK: ${data.yearsInUK}`);
   if (data.SOC) details.push(`- SOC: ${data.SOC}`);
 
+  // Use MP name if available
+  const mpName = mpInfo?.nameFullTitle || "[MP's Name]";
+
   const prompt = `
     You are helping people with lived experience of the UK immigration system--or know someone who does--write a letter to their Member of Parliament to explain the impact of the 2025 immigration rule change on them.  
 
@@ -41,7 +52,7 @@ export async function generateMPEmail(data: FormData): Promise<string> {
 
     This is a good example:
     Subject: Urgent Concern: Impact of Recent Immigration Rule Change on My Life
-    Dear [MP's Name],
+    Dear ${mpName},
     I hope this email finds you well. My name is Harry Paulson, and I am writing to you not only as a concerned constituent but also as a dedicated contributor to our community here in the UK. I have been residing in the UK for the past 3.5 years, during which I have worked diligently as a architect assistant, earning an annual income between £20,001 and £30,000. I take pride in my profession and actively contribute to the economy through an annual tax contribution of £4,564.
     My primary concern stems from rapid changes in the field may threaten my job security. If the proposed immigration rule change makes securing new visa-sponsoring employment more difficult, I risk deportation despite having built a life here and contributed both economically and socially to the community.
     Throughout my time in the UK, I have actively engaged with the local community, using my skills to entertain and bring joy to many while supporting local businesses and cultural events. I am eager to continue contributing to the UK's vibrant society, but the proposed immigration changes create uncertainty that puts both my future and contributions at risk.
@@ -66,7 +77,7 @@ export async function generateMPEmail(data: FormData): Promise<string> {
     – Do not use bullet points; write in structured clear paragraphs.
     – Do not be overly verbose or use obscure vocabularies.
     - Give a personalized subject line.
-    – Start with a greeting, e.g., "Dear [MP's title and name]".
+    – Start with a greeting, e.g., "Dear ${mpName}".
     - End with a respectful sign-off.
     – Check for grammar and typos; make sure the text follows standard British English.
     – End with a polite closing requesting a response.

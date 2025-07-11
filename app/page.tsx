@@ -9,6 +9,7 @@ export default function Home() {
       <CallToAction />
       <div className="my-12" />
       <EmailDrafter />
+      <div className="my-18" />
     </main>
   )
 }

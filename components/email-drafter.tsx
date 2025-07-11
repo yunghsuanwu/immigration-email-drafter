@@ -17,6 +17,7 @@ import { generateMPEmail } from "@/lib/generate-mp-email"
 import { saveUserSubmission } from "@/lib/database"
 import { exportData } from "@/lib/export-data"
 import { useToast } from "@/hooks/use-toast"
+import { findYourMP } from "@/lib/find-your-mp"
 
 import type { FormData } from "@/types/form-data"
 import { salaryBrackets, visaTypes, industryTypes, revenueBrackets, companySizes } from "@/types/form-data"
@@ -55,6 +56,36 @@ export function EmailDrafter() {
   const [plannedHiresInvalid, setPlannedHiresInvalid] = useState(false)
   const [isFocused, setIsFocused] = useState<string | null>(null)
   const { toast } = useToast()
+  const [mpInfo, setMpInfo] = useState<null | {
+    nameFullTitle: string
+    nameAddressAs: string
+    partyName: string
+    membershipFrom: string
+    email: string | null
+    phone: string
+    memberID: string | number | null
+  }>(null)
+  const [mpLoading, setMpLoading] = useState(false)
+  const [mpError, setMpError] = useState<string | null>(null)
+
+  const handleFindMP = async () => {
+    setMpLoading(true)
+    setMpError(null)
+    setMpInfo(null)
+    const postalCode = form.getValues("postalCode")
+    if (!postalCode || postalCode.trim() === "") {
+      setMpError("Please enter a postal code.")
+      setMpLoading(false)
+      return
+    }
+    const result = await findYourMP(postalCode)
+    if (!result) {
+      setMpError("Could not find an MP for that postal code.")
+    } else {
+      setMpInfo(result)
+    }
+    setMpLoading(false)
+  }
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -100,12 +131,16 @@ export function EmailDrafter() {
     } else if (currentSection === "company-information") {
       setCurrentSection("concerns")
     } else if (currentSection === "concerns") {
+      setCurrentSection("your-mp")
+    } else if (currentSection === "your-mp") {
       setCurrentSection("data-collection")
     }
   }
 
   const handlePreviousSection = () => {
     if (currentSection === "data-collection") {
+      setCurrentSection("your-mp")
+    } else if (currentSection === "your-mp") {
       setCurrentSection("concerns")
     } else if (currentSection === "concerns") {
       if (watchWhyWriting === "visa-employee" || watchWhyWriting === "other-reasons") {
@@ -129,7 +164,7 @@ export function EmailDrafter() {
       let email: string
       try {
         // Try to generate with AI first
-        email = await generateMPEmail(data)
+        email = await generateMPEmail(data, mpInfo ?? undefined) // Pass mpInfo as undefined if null
       } catch (aiError) {
         console.warn("AI generation failed, using fallback:", aiError)
         // Import the fallback generator
@@ -235,17 +270,17 @@ export function EmailDrafter() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full min-h-[700px] flex flex-col">
       <CardHeader>
         <CardTitle>Re:Immigration Email Drafter</CardTitle>
         <CardDescription>
-          Answer a few questions to generate a personalised email. We only ask the essentials for your MP to know about your situation.
+          Answer a few questions to generate a personalised email; this helps your MP to understand your situation better.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 flex flex-col">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="input">Personal Details</TabsTrigger>
+            <TabsTrigger value="input">Personalise</TabsTrigger>
             <TabsTrigger value="edit" disabled={!generatedEmail}>
               Edit
             </TabsTrigger>
@@ -256,7 +291,7 @@ export function EmailDrafter() {
 
           <TabsContent value="input">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
                 {/* Basic Information Section */}
                 {currentSection === "basic-info" && (
                   <div className="space-y-12">
@@ -293,7 +328,7 @@ export function EmailDrafter() {
                         />
                       </div>
 
-                      <FormField
+                      {/*<FormField
                         control={form.control}
                         name="postalCode"
                         render={({ field }) => (
@@ -301,7 +336,7 @@ export function EmailDrafter() {
                             <FormLabel>Postal Code *</FormLabel>
                                                           <FormControl>
                                 <Input 
-                                  placeholder="e.g., SW1A 1AA" 
+                                  placeholder="SW1A 1AA" 
                                   className="placeholder:text-gray-400 placeholder:italic select-text" 
                                   {...field}
                                   onFocus={() => setIsFocused("postalCode")}
@@ -314,7 +349,7 @@ export function EmailDrafter() {
                             <FormMessage />
                           </FormItem>
                         )}
-                      />
+                      />*/}
 
                       <FormField
                         control={form.control}
@@ -362,11 +397,11 @@ export function EmailDrafter() {
                       />
                     </div>
                     <div className="flex justify-end">
-                       <Button type="button" variant="outline" onClick={handleNextSection} className="w-1/2 hover:bg-gray-200 cursor-pointer">
-                         Continue
-                         <ArrowRight className="ml-2 h-4 w-4" />
-                       </Button>
-                     </div>
+                      <Button type="button" variant="outline" onClick={handleNextSection} className="w-1/2 hover:bg-gray-200 cursor-pointer">
+                        Continue
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 )}
 
@@ -824,13 +859,20 @@ export function EmailDrafter() {
                               <Textarea
                                 placeholder={
                                   watchWhyWriting === "employer"
-                                    ? "Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, anything works!\n\nPlease describe how the immigration changes might affect your business operations, hiring plans, or company growth..."
-                                    : "Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, anything works!\n\nPlease describe how the immigration changes will affect you (professionally and personally), your family, or your community..."
+                                    ? "Please describe how the immigration changes might affect your business operations, hiring plans, or company growth..."
+                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community..."
                                 }
                                 className="min-h-[120px] placeholder:italic placeholder:text-gray-400 select-text"
                                 {...field}
+                                onFocus={() => setIsFocused("immigrationConcerns")}
+                                onBlur={() => setIsFocused(null)}
                               />
                             </FormControl>
+                            {isFocused === "immigrationConcerns" && (
+                              <FormDescription className="text-gray-400 italic">
+                                Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, or even in your native tongue!
+                              </FormDescription>
+                            )}
                             <FormMessage />
                           </FormItem>
                         )}
@@ -891,6 +933,76 @@ export function EmailDrafter() {
                         Back
                       </Button>
                       <Button type="button" variant="outline" onClick={handleNextSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
+                        Continue
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Your MP Section */}
+                {currentSection === "your-mp" && (
+                  <div className="space-y-12">
+                    <div className="space-y-6">
+                      <h3 className="text-lg font-semibold">Find your MP</h3>
+                      <FormField
+                        control={form.control}
+                        name="postalCode"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Postal Code *</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="SW1A 1AA" 
+                                className="placeholder:text-gray-400 placeholder:italic select-text" 
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        className="mt-2"
+                        onClick={handleFindMP}
+                        disabled={mpLoading}
+                      >
+                        {mpLoading ? "Looking up MP..." : "Find MP"}
+                      </Button>
+                      {mpError && <p className="text-red-500 text-sm mt-2">{mpError}</p>}
+                      {mpInfo && (
+                        <div className="mt-4 p-4 border rounded bg-gray-50">
+                          <div><strong>Name:</strong> {mpInfo.nameFullTitle}</div>
+                          <div><strong>Address As:</strong> {mpInfo.nameAddressAs}</div>
+                          <div><strong>Party:</strong> {mpInfo.partyName}</div>
+                          <div><strong>Constituency:</strong> {mpInfo.membershipFrom}</div>
+                          <div><strong>Email:</strong> {mpInfo.email ? (
+                            <a href={`mailto:${mpInfo.email}`} className="underline text-blue-600">{mpInfo.email}</a>
+                          ) : 'None'}</div>
+                          <div><strong>Phone:</strong> {mpInfo.phone || 'None'}</div>
+                          {mpInfo && mpInfo.memberID && (
+                            <div className="mt-2">
+                              <a
+                                href={`https://members.parliament.uk/member/${mpInfo.memberID}/contact`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline text-blue-600"
+                              >
+                                Full MP contact details
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex gap-4">
+                      <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back
+                      </Button>
+                      <Button type="button" variant="outline" onClick={handleNextSection} className="w-1/2 hover:bg-gray-200 cursor-pointer">
                         Continue
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -973,8 +1085,6 @@ export function EmailDrafter() {
                 <EmailEditor
                   initialContent={generatedEmail}
                   onChange={setEditedEmail}
-                  recipient="Your Member of Parliament"
-                  subject="Concerns about the Immigration White Paper"
                 />
                 <div className="flex gap-4 mt-4">
                   <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("input")}>
@@ -1010,15 +1120,6 @@ export function EmailDrafter() {
         </Tabs>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
-        <div className="flex justify-between w-full">
-          <div className="text-sm text-muted-foreground">
-            {emailHistory.length > 0 ? `${emailHistory.length} emails prepared` : "No emails prepared yet"}
-          </div>
-          <Button variant="outline" className="hover:bg-gray-200 cursor-pointer" onClick={handleExport} disabled={emailHistory.length === 0}>
-            <Download className="mr-2 h-4 w-4" />
-            Export Data
-          </Button>
-        </div>
         <div className="border-t pt-4 w-full">
           <p className="text-sm text-gray-500">
             Privacy notice: The only data we save by default is your postal code, your reason for writing the email, and your residency status. 

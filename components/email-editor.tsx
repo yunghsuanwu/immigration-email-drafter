@@ -7,11 +7,9 @@ import { Textarea } from "@/components/ui/textarea"
 interface EmailEditorProps {
   initialContent: string
   onChange: (content: string) => void
-  recipient: string
-  subject: string
 }
 
-export function EmailEditor({ initialContent, onChange, recipient, subject }: EmailEditorProps) {
+export function EmailEditor({ initialContent, onChange }: EmailEditorProps) {
   const [content, setContent] = useState(initialContent)
 
   useEffect(() => {
@@ -20,16 +18,6 @@ export function EmailEditor({ initialContent, onChange, recipient, subject }: Em
 
   return (
     <Card className="border-0">
-      <CardHeader className="pb-2">
-        <div className="space-y-1">
-          <div className="text-sm">
-            <span className="font-semibold">To:</span> {recipient}
-          </div>
-          <div className="text-sm">
-            <span className="font-semibold">Subject:</span> {subject}
-          </div>
-        </div>
-      </CardHeader>
       <CardContent>
         <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[300px] font-sans" />
       </CardContent>
