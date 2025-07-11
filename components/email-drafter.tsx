@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Loader2, Send, Download, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
+import { Loader2, Send, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
 import { EmailEditor } from "@/components/email-editor"
 import { RepresentativeSelector } from "@/components/representative-selector"
 import { generateMPEmail } from "@/lib/generate-mp-email"
@@ -252,21 +252,6 @@ export function EmailDrafter() {
     setEditedEmail("")
     setSubmissionId("")
     setActiveTab("input")
-  }
-
-  const handleExport = async () => {
-    try {
-      await exportData(emailHistory)
-      toast({
-        title: "Data exported",
-        description: "Email data has been exported as CSV.",
-      })
-    } catch {
-      toast({
-        title: "Export failed",
-        description: "Failed to export data. Please try again.",
-      })
-    }
   }
 
   return (

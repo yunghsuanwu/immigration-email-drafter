@@ -25,13 +25,13 @@ export async function findYourMP(postalCode: string) {
           const contactData = await contactRes.json();
           const contacts = contactData.value || [];
           // Email
-          const emailEntry = contacts.find((c: any) => c.email);
+          const emailEntry = contacts.find((c: { email?: string }) => c.email);
           if (emailEntry) email = emailEntry.email;
           // Phone
-          const phoneEntry = contacts.find((c: any) => c.phone);
+          const phoneEntry = contacts.find((c: { phone?: string }) => c.phone);
           if (phoneEntry) phone = phoneEntry.phone;
         }
-      } catch (e) {
+      } catch {
         // Ignore contact fetch errors, just return base info
       }
     }
