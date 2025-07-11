@@ -20,12 +20,12 @@ import { findYourMP } from "@/lib/find-your-mp"
 import type { FormData } from "@/types/form-data"
 import { salaryBrackets, visaTypes, industryTypes, revenueBrackets, companySizes } from "@/types/form-data"
 
-type EmailData = {
+{/*type EmailData = {
   recipient: string
   subject: string
   content: string
   timestamp: string
-}
+}*/}
 
 const salaryBracketOptions = salaryBrackets
 
