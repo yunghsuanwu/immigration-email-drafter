@@ -30,7 +30,7 @@ export function NavBar() {
           </Button>*/}
           <Link href="https://www.notastranger.org" className="flex items-center space-x-2">
             <Image
-              src="/re-immigration/images/logo/not_a_stranger_1100x220_words_wlogo_temp.png"
+              src="/images/logo/not_a_stranger_1100x220_words_wlogo_temp.png"
               alt="Not A Stranger Logo"
               width={1100}
               height={220}
