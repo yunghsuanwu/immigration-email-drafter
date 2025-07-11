@@ -38,31 +38,16 @@ export async function generateMPEmail(data: FormData): Promise<string> {
 
     You are writing on behalf of someone who has filled in a form about their residency status and socioeconomic situation, whose data will be shared with you.
     Your job is to write a professional and compelling email to the MP from the constituent; make the writing style original so it does not read like an AI.
-    You must:
-    – Write in standard British English regardless of the input language; translate if necessary. 
-    - Highlight the economic contribution the constitutent has made to the UK, if you're given any indication on this.
-    – Highlight the social contribution the constituent has made to the UK, if you're given any indication on this.
-    - Highlight the particular concerns the constitutent.
-    - Write in first person as the affected constituent and preserve their own voice.
-    - Do not include any harmful languages such as swear words or discriminatory remarks that are anti-immigrant, racist, sexist, transphobic, or hate-filled.
-    – Do not be overly verbose.
-    – Do not use bullet points.
-    - Start with a personalized subject line.
-    – Start with a greeting, e.g., "Dear [MP's title and name]".
-    - End with a respectful sign-off.
-    – Check the grammar of the entire piece and make sure it follows standard British English.
-
-    Make sure it does not read like an AI has written it and make sure every contribution is unique. 
 
     This is a good example:
     Subject: Urgent Concern: Impact of Recent Immigration Rule Change on My Life
     Dear [MP's Name],
-    I hope this email finds you well. My name is Harry Pulson, and I am writing to you not only as a concerned constituent but also as a dedicated contributor to our community here in the UK. I have been residing in the UK for the past 3.5 years, during which I have worked diligently as a architect assistant, earning an annual income between £20,001 and £30,000. I take pride in my profession and actively contribute to the economy through an annual tax contribution of £4,564.
+    I hope this email finds you well. My name is Harry Paulson, and I am writing to you not only as a concerned constituent but also as a dedicated contributor to our community here in the UK. I have been residing in the UK for the past 3.5 years, during which I have worked diligently as a architect assistant, earning an annual income between £20,001 and £30,000. I take pride in my profession and actively contribute to the economy through an annual tax contribution of £4,564.
     My primary concern stems from rapid changes in the field may threaten my job security. If the proposed immigration rule change makes securing new visa-sponsoring employment more difficult, I risk deportation despite having built a life here and contributed both economically and socially to the community.
     Throughout my time in the UK, I have actively engaged with the local community, using my skills to entertain and bring joy to many while supporting local businesses and cultural events. I am eager to continue contributing to the UK's vibrant society, but the proposed immigration changes create uncertainty that puts both my future and contributions at risk.
     I urge you to consider the impact these policy changes may have on individuals like myself who are committed to positive contributions. I request that you advocate for a more flexible and inclusive immigration framework that acknowledges the diverse skills of non-citizen residents and provides reasonable pathways to secure alternative employment without deportation threats for those vulnerable to technological displacement.
     Respectfully,
-    Harry Pulson
+    Harry Paulson
 
     Use the following constituent details:
     ${details.join('\n')}
@@ -70,7 +55,22 @@ export async function generateMPEmail(data: FormData): Promise<string> {
     Immigration Concerns:
     ${data.immigrationConcerns}
 
-    The email should be approximately 300-500 words and structured with clear paragraphs.
+    You must:
+    – Write in standard British English regardless of the input language; translate if necessary. 
+    - Highlight the economic contribution the constituent has made to the UK, if any.
+    – Highlight the social contribution the constituent has made to the UK, if any.
+    - Highlight the particular concerns of the constituent.
+    – Focus on concrete impacts and refrain from making generic statements. 
+    - Write in first person as the affected constituent and preserve their own voice.
+    - Do not include any harmful languages such as swear words or discriminatory remarks that are anti-immigrant, racist, sexist, transphobic, or hate-filled.
+    – Do not use bullet points; write in structured clear paragraphs.
+    – Do not be overly verbose or use obscure vocabularies.
+    - Give a personalized subject line.
+    – Start with a greeting, e.g., "Dear [MP's title and name]".
+    - End with a respectful sign-off.
+    – Check for grammar and typos; make sure the text follows standard British English.
+    – End with a polite closing requesting a response.
+    – The email should be approximately 300-500 words.
   `
 
   try {
