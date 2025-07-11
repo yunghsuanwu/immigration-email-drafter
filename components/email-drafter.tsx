@@ -218,7 +218,7 @@ export function EmailDrafter() {
     }
   }
 
-  const handleComplete = () => {
+  {/*const handleComplete = () => {
     const emailData: EmailData = {
       recipient: "Selected Representatives",
       subject: "Concerns about the Immigration White Paper",
@@ -247,7 +247,7 @@ export function EmailDrafter() {
     setEditedEmail("")
     setSubmissionId("")
     setActiveTab("input")
-  }
+  }*/}
 
   return (
     <Card className="w-full min-h-[700px] flex flex-col">
