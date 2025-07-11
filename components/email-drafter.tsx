@@ -15,7 +15,6 @@ import { EmailEditor } from "@/components/email-editor"
 import { RepresentativeSelector } from "@/components/representative-selector"
 import { generateMPEmail } from "@/lib/generate-mp-email"
 import { saveUserSubmission } from "@/lib/database"
-import { exportData } from "@/lib/export-data"
 import { useToast } from "@/hooks/use-toast"
 import { findYourMP } from "@/lib/find-your-mp"
 
@@ -47,7 +46,6 @@ export function EmailDrafter() {
   const [generatedEmail, setGeneratedEmail] = useState("")
   const [editedEmail, setEditedEmail] = useState("")
   const [submissionId, setSubmissionId] = useState("")
-  const [emailHistory, setEmailHistory] = useState<EmailData[]>([])
   const [isProTipsOpen, setIsProTipsOpen] = useState(false)
   const [yearsInUKInvalid, setYearsInUKInvalid] = useState(false)
   const [socInvalid, setSocInvalid] = useState(false)
@@ -238,8 +236,6 @@ export function EmailDrafter() {
     } catch {
       console.error("Error saving to localStorage")
     }
-
-    setEmailHistory((prev) => [emailData, ...prev])
 
     toast({
       title: "Process completed",
