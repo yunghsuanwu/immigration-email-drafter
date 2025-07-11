@@ -12,7 +12,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Loader2, Send, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
 import { EmailEditor } from "@/components/email-editor"
-import { RepresentativeSelector } from "@/components/representative-selector"
 import { generateMPEmail } from "@/lib/generate-mp-email"
 import { saveUserSubmission } from "@/lib/database"
 import { useToast } from "@/hooks/use-toast"
@@ -208,7 +207,7 @@ export function EmailDrafter() {
         description: "Your information has been saved. Now select representatives to contact.",
       })
 
-      setActiveTab("representatives")
+      setActiveTab("send")
     } catch {
       toast({
         title: "Save failed",
@@ -265,7 +264,7 @@ export function EmailDrafter() {
             <TabsTrigger value="edit" disabled={!generatedEmail}>
               Edit
             </TabsTrigger>
-            <TabsTrigger value="representatives" disabled={!submissionId}>
+            <TabsTrigger value="send" disabled={!submissionId}>
               Send
             </TabsTrigger>
           </TabsList>
@@ -308,29 +307,6 @@ export function EmailDrafter() {
                           )}
                         />
                       </div>
-
-                      {/*<FormField
-                        control={form.control}
-                        name="postalCode"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Postal Code *</FormLabel>
-                                                          <FormControl>
-                                <Input 
-                                  placeholder="SW1A 1AA" 
-                                  className="placeholder:text-gray-400 placeholder:italic select-text" 
-                                  {...field}
-                                  onFocus={() => setIsFocused("postalCode")}
-                                  onBlur={() => setIsFocused(null)}
-                                />
-                              </FormControl>
-                              {isFocused === "postalCode" && (
-                                <FormDescription className="text-gray-400 italic">We&apos;ll use this to find your MP and local councilors.</FormDescription>
-                              )}
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />*/}
 
                       <FormField
                         control={form.control}
@@ -1089,13 +1065,32 @@ export function EmailDrafter() {
             )}
           </TabsContent>
 
-          <TabsContent value="representatives">
-            {submissionId && (
-              <RepresentativeSelector
-                postalCode={form.getValues("postalCode")}
-                submissionId={submissionId}
-                onComplete={handleComplete}
-              />
+          <TabsContent value="send">
+            {editedEmail && (
+              <>
+                <Card className="border-0 mb-4">
+                  <CardHeader>
+                    <CardTitle>Now, the final step is to send the email.</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4">
+                      <strong>Your Finalized Email:</strong>
+                    </div>
+                    <pre className="whitespace-pre-wrap break-words bg-gray-50 p-4 rounded border text-sm">{editedEmail}</pre>
+                  </CardContent>
+                </Card>
+                <Card className="mb-4">
+                  <CardHeader>
+                    <CardTitle>Check before sending</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Make sure you include your <strong>full name</strong> and <strong>postal code</strong>. This is essential for MPs to know that you are their constituent.</li>
+                      <li>Make sure you include your <strong>contact information</strong> (phone or email).</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </>
             )}
           </TabsContent>
         </Tabs>
