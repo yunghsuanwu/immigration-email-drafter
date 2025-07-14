@@ -41,7 +41,7 @@ export function EmailDrafter() {
   const [activeTab, setActiveTab] = useState("input")
   const [currentSection, setCurrentSection] = useState("basic-info")
   const [isGenerating, setIsGenerating] = useState(false)
-  const [isSending, setIsSending] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const [generatedEmail, setGeneratedEmail] = useState("")
   const [editedEmail, setEditedEmail] = useState("")
   const [submissionId, setSubmissionId] = useState("")
@@ -64,6 +64,26 @@ export function EmailDrafter() {
   }>(null)
   const [mpLoading, setMpLoading] = useState(false)
   const [mpError, setMpError] = useState<string | null>(null)
+
+  const [toCopied, setToCopied] = useState(false);
+  const [subjectCopied, setSubjectCopied] = useState(false);
+  const [bodyCopied, setBodyCopied] = useState(false);
+
+  const handleCopyTo = (to: string) => {
+    navigator.clipboard.writeText(to);
+    setToCopied(true);
+    setTimeout(() => setToCopied(false), 1500);
+  };
+  const handleCopySubject = (subject: string) => {
+    navigator.clipboard.writeText(subject);
+    setSubjectCopied(true);
+    setTimeout(() => setSubjectCopied(false), 1500);
+  };
+  const handleCopyBody = (body: string) => {
+    navigator.clipboard.writeText(body);
+    setBodyCopied(true);
+    setTimeout(() => setBodyCopied(false), 1500);
+  };
 
   const handleFindMP = async () => {
     setMpLoading(true)
@@ -196,7 +216,7 @@ export function EmailDrafter() {
   }
 
   const handleSaveAndContinue = async () => {
-    setIsSending(true)
+    setIsSaving(true)
     try {
       const formData = form.getValues()
       const submissionIdGenerated = await saveUserSubmission(formData, editedEmail)
@@ -214,7 +234,7 @@ export function EmailDrafter() {
         description: "Failed to save your information. Please try again.",
       })
     } finally {
-      setIsSending(false)
+      setIsSaving(false)
     }
   }
 
@@ -1014,6 +1034,7 @@ export function EmailDrafter() {
 
                     <div className="flex gap-4">
                       <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
                         Back
                       </Button>
                       <Button type="submit" variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" disabled={isGenerating}>
@@ -1045,18 +1066,19 @@ export function EmailDrafter() {
                 />
                 <div className="flex gap-4 mt-4">
                   <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("input")}>
+                    <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Details
                   </Button>
-                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={handleSaveAndContinue} disabled={isSending}>
-                    {isSending ? (
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={handleSaveAndContinue} disabled={isSaving}>
+                    {isSaving ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Saving...
                       </>
                     ) : (
                       <>
-                        <Send className="mr-2 h-4 w-4" />
-                        Continue to Send
+                        Confirm edit
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </>
                     )}
                   </Button>
@@ -1070,24 +1092,94 @@ export function EmailDrafter() {
               <>
                 <Card className="border-0 mb-4">
                   <CardHeader>
-                    <CardTitle>Now, the final step is to send the email.</CardTitle>
+                    <CardTitle>Finally, it's time to send the email.</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="mb-4">
-                      <strong>Your Finalized Email:</strong>
-                    </div>
-                    <pre className="whitespace-pre-wrap break-words bg-gray-50 p-4 rounded border text-sm">{editedEmail}</pre>
-                  </CardContent>
-                </Card>
-                <Card className="mb-4">
-                  <CardHeader>
-                    <CardTitle>Check before sending</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Make sure you include your <strong>full name</strong> and <strong>postal code</strong>. This is essential for MPs to know that you are their constituent.</li>
-                      <li>Make sure you include your <strong>contact information</strong> (phone or email).</li>
-                    </ul>
+                    {(() => {
+                      // Extract To, Subject, and Body from the editedEmail
+                      const to = mpInfo?.email || "[MP Email]";
+                      let subject = "";
+                      let body = editedEmail;
+                      const lines = editedEmail.split("\n");
+                      if (lines[0].startsWith("Subject:")) {
+                        subject = lines[0].replace("Subject:", "").trim();
+                        body = lines.slice(1).join("\n").trim();
+                      } else {
+                        subject = "Email to your MP";
+                      }
+                      // Append postal code after sign-off (try to find 'Yours sincerely,' or 'Yours faithfully,')
+                      let postalCode = form.getValues("postalCode");
+                      if (postalCode) postalCode = postalCode.toUpperCase();
+                      let bodyWithPostal = body;
+                      const signOffMatch = body.match(/(Yours sincerely,|Yours faithfully,)([\s\S]*)/i);
+                      if (signOffMatch && typeof signOffMatch.index === "number" && postalCode) {
+                        // Insert postal code after the sign-off name
+                        const before = body.slice(0, signOffMatch.index + signOffMatch[1].length);
+                        const after = body.slice(signOffMatch.index + signOffMatch[1].length);
+                        bodyWithPostal = `${before}\n${after.trim()}\n${postalCode}`;
+                      } else if (postalCode) {
+                        bodyWithPostal += `\n${postalCode}`;
+                      }
+
+                      return (
+                        <div className="space-y-2">
+                          <p className="text-sm font-bold">Copy the following fields respectively in your personal email to send.</p>
+                          <div className="flex items-center text-sm">
+                            <span className="font-bold mr-2">To:</span>
+                            <span className="bg-gray-50 p-1 rounded border">{to}</span>
+                            <button
+                              type="button"
+                              className="ml-2 px-2 py-1 border rounded text-xs bg-white hover:bg-gray-100"
+                              onClick={() => handleCopyTo(to)}
+                            >
+                              {toCopied ? "Copied!" : "Copy"}
+                            </button>
+                          </div>
+                          <div className="flex items-center text-sm">
+                            <span className="font-bold mr-2">Subject:</span>
+                            <span className="bg-gray-50 p-1 rounded border text-sm">{subject}</span>
+                            <button
+                              type="button"
+                              className="ml-2 px-2 py-1 border rounded text-xs bg-white hover:bg-gray-100"
+                              onClick={() => handleCopySubject(subject)}
+                            >
+                              {subjectCopied ? "Copied!" : "Copy"}
+                            </button>
+                          </div>
+                          <div className="flex flex-col text-sm space-y-2">
+                            <span className="flex items-center">
+                              <span className="font-bold">Body:</span>
+                              <button
+                                type="button"
+                                className="ml-2 px-2 py-1 border rounded text-xs bg-white hover:bg-gray-100"
+                                onClick={() => handleCopyBody(bodyWithPostal)}
+                              >
+                                {bodyCopied ? "Copied!" : "Copy"}
+                              </button>
+                            </span>
+                            <span className="bg-gray-50 p-2 rounded border text-sm">
+                              <pre className="whitespace-pre-wrap break-words bg-transparent p-0 border-0 text-sm">{bodyWithPostal}</pre>
+                            </span>
+                            <div className="flex gap-4 mt-6">
+                            <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("edit")}>
+                              <ArrowLeft className="mr-2 h-4 w-4" />
+                              Back to Edit
+                            </Button>
+                            <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => {
+                              form.reset();
+                              setGeneratedEmail("");
+                              setEditedEmail("");
+                              setSubmissionId("");
+                              setActiveTab("input");
+                            }}>
+                              <Send className="mr-2 h-4 w-4" />
+                              Draft another email
+                            </Button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </CardContent>
                 </Card>
               </>
