@@ -1092,7 +1092,7 @@ export function EmailDrafter() {
               <>
                 <Card className="border-0 mb-4">
                   <CardHeader>
-                    <CardTitle>Finally, it's time to send the email.</CardTitle>
+                    <CardTitle>Finally, it&apos;s time to send the email.</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {(() => {
