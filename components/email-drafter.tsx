@@ -414,7 +414,27 @@ export function EmailDrafter() {
                                     onChange={() => field.onChange("uk-national")}
                                     className="cursor-pointer"
                                   />
-                                  <span>I am a UK national/resident with settled status in the UK.</span>
+                                  <span>I am a UK national (with a British passport).</span>
+                                </label>
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
+                                  <input
+                                    type="radio"
+                                    value="indefinite-leave-to-remain"
+                                    checked={field.value === "indefinite-leave-to-remain"}
+                                    onChange={() => field.onChange("indefinite-leave-to-remain")}
+                                    className="cursor-pointer"
+                                  />
+                                  <span>I have indefinite leave to remain.</span>
+                                </label>
+                                <label className="flex items-center space-x-2 cursor-pointer select-text">
+                                  <input
+                                    type="radio"
+                                    value="settled-status"
+                                    checked={field.value === "settled-status"}
+                                    onChange={() => field.onChange("settled-status")}
+                                    className="cursor-pointer"
+                                  />
+                                  <span>I have settled status (from the EU Settlement Scheme).</span>
                                 </label>
                                 <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
@@ -424,7 +444,7 @@ export function EmailDrafter() {
                                     onChange={() => field.onChange("other-status")}
                                     className="cursor-pointer"
                                   />
-                                  <span>Other status.</span>
+                                  <span>Other.</span>
                                 </label>
                               </div>
                             </FormControl>
@@ -441,7 +461,7 @@ export function EmailDrafter() {
                             <FormItem>
                               <FormLabel>Please describe your residential status.</FormLabel>
                               <FormControl>
-                                <Input placeholder="e.g., EU Settled Status, Tier 2 Visa" className="placeholder:text-gray-400 placeholder:italic" {...field} />
+                                <Input placeholder="e.g., EU pre-settled status, dependent of a visa holder" className="placeholder:text-gray-400 placeholder:italic" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -890,7 +910,7 @@ export function EmailDrafter() {
                               <div className="space-y-2 text-sm">
                                 <p className="font-medium">Mention specific information, including:</p>
                                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                                  <li>Your living experience in the UK and/or personal journey in obtaining visas.</li>
+                                  <li>Your journey to obtain the UK citizenship or indefinite leave to remain/settled status, if applicable.</li>
                                   <li>Your contributions to the community (work, volunteering, taxes paid).</li>
                                   <li>Any specific skills or expertise you bring to the UK.</li>
                                   <li>How these changes would affect you, your family, or your partner.</li>
@@ -941,8 +961,8 @@ export function EmailDrafter() {
                       />
                       <Button
                         type="button"
-                        variant="secondary"
-                        className="mt-2"
+                        variant="outline"
+                        className="hover:bg-gray-200 cursor-pointer"
                         onClick={handleFindMP}
                         disabled={mpLoading}
                       >

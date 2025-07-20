@@ -3,7 +3,7 @@ export type FormData = {
   constituentName: string
   constituentEmail: string
   whyWriting: "visa-employee" | "employer" | "other-reasons"
-  residentialStatus: "uk-national" | "visa-holder" | "other-status"
+  residentialStatus: "uk-national" | "visa-holder" | "other-status" | "indefinite-leave-to-remain" | "settled-status"
   residentialStatusOther?: string
   visaType?: string
   yearsInUK?: string
@@ -50,6 +50,7 @@ export const visaTypes = [
   "Start-up visa",
   "Innovator visa",
   "Investor visa",
+  "High Potential Individual visa",
   "Other",
 ]
 
