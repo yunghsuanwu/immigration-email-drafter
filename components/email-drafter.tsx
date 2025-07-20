@@ -172,7 +172,6 @@ export function EmailDrafter() {
     console.log("Form data submitted:", data)
     console.log("MP Info submitted:", mpInfo)
     let email: string | null = null;
-    let saveError = false;
     try {
       // 1. Generate the email using the full form data
       try {
@@ -215,7 +214,6 @@ export function EmailDrafter() {
         const submissionIdGenerated = await saveUserSubmission(dataToSave)
         setSubmissionId(submissionIdGenerated)
       } catch {
-        saveError = true;
         toast({
           title: "Save failed",
           description: "Failed to save your information. Please try again.",
