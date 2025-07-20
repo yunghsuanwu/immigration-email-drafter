@@ -19,6 +19,7 @@ export type FormData = {
   plannedOverseasHires?: string
   immigrationConcerns: string
   optInDataCollection: boolean
+  optInUpdates: boolean
 }
 
 export const salaryBrackets = [

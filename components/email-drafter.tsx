@@ -119,6 +119,7 @@ export function EmailDrafter() {
       plannedOverseasHires: "",
       immigrationConcerns: "",
       optInDataCollection: false,
+      optInUpdates: false,
     },
   })
 
@@ -169,6 +170,7 @@ export function EmailDrafter() {
 
   const onSubmit = async (data: FormData) => {
     setIsGenerating(true)
+    setIsSaving(true)
     console.log("Form data submitted:", data)
     try {
       let email: string
@@ -179,12 +181,23 @@ export function EmailDrafter() {
         console.warn("AI generation failed, using fallback:", aiError)
         // Import the fallback generator
         const { generateFallbackEmail } = await import("@/lib/fallback-email-generator")
-        email = generateFallbackEmail(data)
+        try {
+          email = generateFallbackEmail(data)
 
-        toast({
-          title: "Email generated (fallback mode)",
-          description: "AI generation failed, but we've created a template email for you to customize.",
-        })
+          toast({
+            title: "Email generated (fallback mode)",
+            description: "AI generation failed, but we've created a template email for you to customize.",
+          })
+        } catch (fallbackError) {
+          // If fallback also fails, show error toast
+          toast({
+            title: "Generation failed",
+            description: "Failed to generate email. Please try again.",
+          })
+          setIsGenerating(false)
+          setIsSaving(false)
+          return
+        }
       }
 
       setGeneratedEmail(email)
@@ -197,29 +210,34 @@ export function EmailDrafter() {
           description: "Your email to your MP has been generated successfully.",
         })
       }
-          } catch {
-        console.error("Email generation error")
-        toast({
-          title: "Generation failed",
-          description: "Failed to generate email. Please try again.",
-        })
-      } finally {
-      setIsGenerating(false)
-    }
-  }
 
-  const handleSaveAndContinue = async () => {
-    setIsSaving(true)
-    try {
+      // --- Saving logic (incorporate handleSaveAndContinue here) ---
+      // Save default data always, and opt-in data if selected
       const formData = form.getValues()
-      const submissionIdGenerated = await saveUserSubmission(formData, editedEmail)
+      // Build the data to save based on opt-in options
+      const saveForResearch = formData.optInDataCollection
+      const saveForUpdates = formData.optInUpdates
+      // Remove email from data if not opted in for updates
+      let dataToSave = { ...formData }
+      if (!saveForResearch) {
+        // Remove research fields if not opted in
+        dataToSave.yearlyIncome = undefined;
+        dataToSave.profession = undefined;
+        dataToSave.annualTaxContribution = undefined;
+        dataToSave.yearsInUK = undefined;
+        dataToSave.immigrationConcerns = "";
+      }
+      if (!saveForUpdates) {
+        // Remove email if not opted in for updates
+        dataToSave.constituentEmail = "";
+      }
+      const submissionIdGenerated = await saveUserSubmission(dataToSave, email)
       setSubmissionId(submissionIdGenerated)
 
       toast({
         title: "Data saved",
         description: "Your information has been saved. Now select representatives to contact.",
       })
-
       setActiveTab("send")
     } catch {
       toast({
@@ -227,6 +245,7 @@ export function EmailDrafter() {
         description: "Failed to save your information. Please try again.",
       })
     } finally {
+      setIsGenerating(false)
       setIsSaving(false)
     }
   }
@@ -267,7 +286,12 @@ export function EmailDrafter() {
       <CardHeader>
         <CardTitle>Re:Immigration Email Drafter</CardTitle>
         <CardDescription>
-          Answer a few questions to generate a personalised email; this helps your MP to understand your situation better.
+          <ul className="list-disc pl-5">
+            <li>Answer the following questions to help your MP understand your situation.</li>
+            <li>This tool uses state-of-the-art AI models (Claude and GPT) to generate a personalised email for you.</li>
+            <li>Answer as much as you like; but the more you answer, the stronger your email will be.</li>
+            <li>Questions with an asterisk (*) are highly recommended.</li>
+          </ul>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col">
@@ -289,15 +313,14 @@ export function EmailDrafter() {
                 {currentSection === "basic-info" && (
                   <div className="space-y-12">
                     <div className="space-y-6">
-                      <h3 className="text-lg font-semibold">Basic Information</h3>
-
+                      <h3 className="text-lg font-semibold">Tell us a bit about yourself...</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
                           name="constituentName"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Full Name *</FormLabel>
+                              <FormLabel>Your Full Name *</FormLabel>
                               <FormControl>
                                 <Input {...field} className="select-text" />
                               </FormControl>
@@ -1009,9 +1032,7 @@ export function EmailDrafter() {
                       <Alert>
                         <Shield className="h-4 w-4" />
                         <AlertDescription>
-                          <strong>Privacy Notice:</strong> By default, we only save your postal code and residency status to
-                          our database. Your name and email are never saved. You can opt in below to help us with research
-                          by saving additional anonymous data.
+                          <strong>Privacy Notice:</strong> By default, we only save your postal code, your reason for writing the email, and your residency status to our database. Other data you filled in (including your name and email) are not saved unless you consent to it. You can opt in below to help us with research or to receive updates.
                         </AlertDescription>
                       </Alert>
 
@@ -1026,20 +1047,36 @@ export function EmailDrafter() {
                             <div className="space-y-1 leading-none cursor-pointer select-text">
                               <FormLabel>Help with research (optional)</FormLabel>
                               <FormDescription>
-                                Allow us to save additional data (age, income, profession, concerns) to help with
-                                immigration policy research. Your name and email will never be saved.
+                                Allow us to save all additional data (income, profession, concerns) to help with immigration policy research. Your name will never be saved.
                               </FormDescription>
                             </div>
                           </FormItem>
                         )}
                       />
 
-                      {watchOptIn && (
+                      <FormField
+                        control={form.control}
+                        name="optInUpdates"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox checked={field.value} onCheckedChange={field.onChange} className="cursor-pointer" />
+                            </FormControl>
+                            <div className="space-y-1 leading-none cursor-pointer select-text">
+                              <FormLabel>Save your email (optional)</FormLabel>
+                              <FormDescription>
+                                Allow us to email you about updates on this tool, the Not A Stranger initiative and future campaigns. Your email will only be used for this purpose.
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+
+                      {(watchOptIn || form.watch("optInUpdates")) && (
                         <Alert>
                           <Info className="h-4 w-4" />
                           <AlertDescription>
-                            Thank you! This additional data will help us understand the impact of immigration policies. All
-                            data remains anonymous and your personal details are never stored.
+                            Thank you! Your preferences have been saved. All data remains anonymous and your personal details are never stored unless you opt in.
                           </AlertDescription>
                         </Alert>
                       )}
@@ -1082,18 +1119,15 @@ export function EmailDrafter() {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Details
                   </Button>
-                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={handleSaveAndContinue} disabled={isSaving}>
-                    {isSaving ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        Confirm edit
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </>
-                    )}
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => {
+                    form.reset();
+                    setGeneratedEmail("");
+                    setEditedEmail("");
+                    setSubmissionId("");
+                    setActiveTab("input");
+                  }}>
+                    <Send className="mr-2 h-4 w-4" />
+                    Draft another email
                   </Button>
                 </div>
               </>
