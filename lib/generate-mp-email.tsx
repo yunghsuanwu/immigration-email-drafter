@@ -31,9 +31,10 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
     details.push(visaLine);
   } else if (data.residentialStatus === "indefinite-leave-to-remain") {
     let visaLine = `- Residential Status: Indefinite leave to remain (ILR)`;
-    details.push(visaLine)
+    details.push(visaLine);
   } else if (data.residentialStatus === "settled-status") {
-    let visaLine = `- Residential Status: Settled status under the EU Settlement Scheme`
+    let visaLine = `- Residential Status: Settled status under the EU Settlement Scheme`;
+    details.push(visaLine);
   } else if (data.residentialStatus === "other-status") {
     let otherLine = `- Residential Status: Other`;
     if (data.residentialStatusOther) otherLine += ` (${data.residentialStatusOther})`;
