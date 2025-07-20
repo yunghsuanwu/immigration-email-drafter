@@ -25,15 +25,13 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
   // Handle residential status with all possible cases
   if (data.residentialStatus === "uk-national") {
     details.push(`- Residential Status: UK national`);
+  } else if (data.residentialStatus === "indefinite-leave-to-remain") {
+    details.push(`- Residential Status: Indefinite leave to remain (ILR)`);
+  } else if (data.residentialStatus === "settled-status") {
+    details.push(`- Residential Status: Settled status under the EU Settlement Scheme`);
   } else if (data.residentialStatus === "visa-holder") {
     let visaLine = `- Residential Status: Visa holder`;
     if (data.visaType) visaLine += ` (${data.visaType})`;
-    details.push(visaLine);
-  } else if (data.residentialStatus === "indefinite-leave-to-remain") {
-    let visaLine = `- Residential Status: Indefinite leave to remain (ILR)`;
-    details.push(visaLine);
-  } else if (data.residentialStatus === "settled-status") {
-    let visaLine = `- Residential Status: Settled status under the EU Settlement Scheme`;
     details.push(visaLine);
   } else if (data.residentialStatus === "other-status") {
     let otherLine = `- Residential Status: Other`;
