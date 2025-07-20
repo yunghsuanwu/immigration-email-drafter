@@ -172,24 +172,23 @@ export function EmailDrafter() {
     setIsGenerating(true)
     setIsSaving(true)
     console.log("Form data submitted:", data)
+    console.log("MP Info submitted:", mpInfo)
+    let email: string | null = null;
+    let saveError = false;
     try {
-      let email: string
+      // 1. Generate the email using the full form data
       try {
-        // Try to generate with AI first
-        email = await generateMPEmail(data, mpInfo ?? undefined) // Pass mpInfo as undefined if null
+        email = await generateMPEmail(data, mpInfo ?? undefined)
       } catch (aiError) {
         console.warn("AI generation failed, using fallback:", aiError)
-        // Import the fallback generator
         const { generateFallbackEmail } = await import("@/lib/fallback-email-generator")
         try {
           email = generateFallbackEmail(data)
-
           toast({
             title: "Email generated (fallback mode)",
             description: "AI generation failed, but we've created a template email for you to customize.",
           })
-        } catch (fallbackError) {
-          // If fallback also fails, show error toast
+        } catch {
           toast({
             title: "Generation failed",
             description: "Failed to generate email. Please try again.",
@@ -200,27 +199,12 @@ export function EmailDrafter() {
         }
       }
 
-      setGeneratedEmail(email)
-      setEditedEmail(email)
-      setActiveTab("edit")
-
-      if (!email.includes("template email")) {
-        toast({
-          title: "Email generated",
-          description: "Your email to your MP has been generated successfully.",
-        })
-      }
-
-      // --- Saving logic (incorporate handleSaveAndContinue here) ---
-      // Save default data always, and opt-in data if selected
+      // 2. Save the form data to Supabase according to user permissions
       const formData = form.getValues()
-      // Build the data to save based on opt-in options
       const saveForResearch = formData.optInDataCollection
       const saveForUpdates = formData.optInUpdates
-      // Remove email from data if not opted in for updates
-      let dataToSave = { ...formData }
+      const dataToSave = { ...formData }
       if (!saveForResearch) {
-        // Remove research fields if not opted in
         dataToSave.yearlyIncome = undefined;
         dataToSave.profession = undefined;
         dataToSave.annualTaxContribution = undefined;
@@ -228,22 +212,31 @@ export function EmailDrafter() {
         dataToSave.immigrationConcerns = "";
       }
       if (!saveForUpdates) {
-        // Remove email if not opted in for updates
         dataToSave.constituentEmail = "";
       }
-      const submissionIdGenerated = await saveUserSubmission(dataToSave, email)
-      setSubmissionId(submissionIdGenerated)
+      try {
+        const submissionIdGenerated = await saveUserSubmission(dataToSave)
+        setSubmissionId(submissionIdGenerated)
+      } catch {
+        saveError = true;
+        toast({
+          title: "Save failed",
+          description: "Failed to save your information. Please try again.",
+        })
+      }
 
-      toast({
-        title: "Data saved",
-        description: "Your information has been saved. Now select representatives to contact.",
-      })
-      setActiveTab("send")
-    } catch {
-      toast({
-        title: "Save failed",
-        description: "Failed to save your information. Please try again.",
-      })
+      // 3. When both finish, show the 'edit' tab
+      if (email) {
+        setGeneratedEmail(email)
+        setEditedEmail(email)
+        setActiveTab("edit")
+        if (!email.includes("template email")) {
+          toast({
+            title: "Email generated",
+            description: "Your email to your MP has been generated successfully.",
+          })
+        }
+      }
     } finally {
       setIsGenerating(false)
       setIsSaving(false)
@@ -1115,19 +1108,13 @@ export function EmailDrafter() {
                   onChange={setEditedEmail}
                 />
                 <div className="flex gap-4 mt-4">
-                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("input")}>
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("input")}> 
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Details
+                    Back to Personalise
                   </Button>
-                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => {
-                    form.reset();
-                    setGeneratedEmail("");
-                    setEditedEmail("");
-                    setSubmissionId("");
-                    setActiveTab("input");
-                  }}>
-                    <Send className="mr-2 h-4 w-4" />
-                    Draft another email
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("send")}> 
+                    Continue to Send
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
               </>

@@ -3,7 +3,7 @@
 import { supabase } from "./supabase"
 import type { FormData, Representative } from "@/types/form-data"
 
-export async function saveUserSubmission(data: FormData, emailContent: string): Promise<string> {
+export async function saveUserSubmission(data: FormData): Promise<string> {
   const submissionId = `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
   const submissionData = {
@@ -12,7 +12,6 @@ export async function saveUserSubmission(data: FormData, emailContent: string): 
     residency_status: data.residentialStatus,
     visa_type: data.visaType || null,
     opted_in: data.optInDataCollection,
-    email_content: emailContent,
     // Only include additional data if user opted in
     ...(data.optInDataCollection && {
       yearly_income: data.yearlyIncome,

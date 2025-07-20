@@ -134,6 +134,7 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
     – The email should be approximately 300-500 words.
   `
   const promptToUse = data.whyWriting === "employer" ? prompt_employer : prompt;
+  console.log("Prompt sent to GPT:", promptToUse);
 
   try {
     const { text } = await generateText({
