@@ -92,12 +92,3 @@ export const companySizes = [
   "201-1000 employees",
   "1000+ employees",
 ]
-
-export type Representative = {
-  id: string
-  name: string
-  email: string
-  representative_type: "MP" | "Councilor"
-  party?: string
-  constituency?: string
-}

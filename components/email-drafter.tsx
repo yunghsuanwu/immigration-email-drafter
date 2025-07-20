@@ -200,18 +200,29 @@ export function EmailDrafter() {
       const saveForResearch = formData.optInDataCollection
       const saveForUpdates = formData.optInUpdates
       const dataToSave = { ...formData }
-      if (!saveForResearch) {
-        dataToSave.yearlyIncome = undefined;
-        dataToSave.profession = undefined;
-        dataToSave.annualTaxContribution = undefined;
-        dataToSave.yearsInUK = undefined;
-        dataToSave.immigrationConcerns = "";
+      if (formData.whyWriting === "employer") {
+        if (!saveForResearch) {
+          dataToSave.industry = undefined;
+          dataToSave.companySize = undefined;
+          dataToSave.yearlyRevenue = undefined;
+          dataToSave.currentOverseasEmployees = undefined;
+          dataToSave.plannedOverseasHires = undefined;
+          dataToSave.immigrationConcerns = "";
+        }
+      } else {
+        if (!saveForResearch) {
+          dataToSave.yearlyIncome = undefined;
+          dataToSave.profession = undefined;
+          dataToSave.annualTaxContribution = undefined;
+          dataToSave.yearsInUK = undefined;
+          dataToSave.immigrationConcerns = "";
+        }
       }
       if (!saveForUpdates) {
         dataToSave.constituentEmail = "";
       }
       try {
-        const submissionIdGenerated = await saveUserSubmission(dataToSave)
+        const submissionIdGenerated = await saveUserSubmission(dataToSave, mpInfo || undefined)
         setSubmissionId(submissionIdGenerated)
       } catch {
         toast({
@@ -236,37 +247,6 @@ export function EmailDrafter() {
       setIsGenerating(false)
     }
   }
-
-  {/*const handleComplete = () => {
-    const emailData: EmailData = {
-      recipient: "Selected Representatives",
-      subject: "Concerns about the Immigration White Paper",
-      content: editedEmail,
-      timestamp: new Date().toISOString(),
-    }
-
-    // Save to localStorage for history
-    try {
-      const existingHistory = localStorage.getItem("emailHistory")
-      const history = existingHistory ? JSON.parse(existingHistory) : []
-      history.unshift(emailData)
-      localStorage.setItem("emailHistory", JSON.stringify(history))
-    } catch {
-      console.error("Error saving to localStorage")
-    }
-
-    toast({
-      title: "Process completed",
-      description: "Your email has been prepared and representatives have been notified.",
-    })
-
-    // Reset form and state
-    form.reset()
-    setGeneratedEmail("")
-    setEditedEmail("")
-    setSubmissionId("")
-    setActiveTab("input")
-  }*/}
 
   return (
     <Card className="w-full min-h-[700px] flex flex-col">
