@@ -15,17 +15,21 @@ export type Database = {
           postal_code: string
           residency_status: string
           visa_type: string | null
-          visa_situation: string | null
+          other_status: string | null
           opted_in: boolean
-          age: string | null
-          writing_for: string | null
-          yearly_income: string | null
-          profession: string | null
-          annual_tax_contribution: string | null
-          years_in_uk: string | null
-          immigration_concerns: string | null
-          email_content: string | null
-          representatives_contacted: string[] | null
+          writing_for: string
+          yearly_income?: string | null
+          profession?: string | null
+          annual_tax_contribution?: string | null
+          years_in_uk?: string | null
+          immigration_concerns?: string | null
+          mp_name?: string | null
+          mp_address_as?: string | null
+          mp_party?: string | null
+          mp_constituency?: string | null
+          mp_email?: string | null
+          mp_phone?: string | null
+          mp_member_id?: string | number | null
           created_at: string
         }
         Insert: {
@@ -33,64 +37,114 @@ export type Database = {
           postal_code: string
           residency_status: string
           visa_type?: string | null
-          visa_situation?: string | null
+          other_status?: string | null
           opted_in?: boolean
-          age?: string | null
-          writing_for?: string | null
+          writing_for?: string
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
           years_in_uk?: string | null
           immigration_concerns?: string | null
-          email_content?: string | null
-          representatives_contacted?: string[] | null
+          mp_name?: string | null
+          mp_address_as?: string | null
+          mp_party?: string | null
+          mp_constituency?: string | null
+          mp_email?: string | null
+          mp_phone?: string | null
+          mp_member_id?: string | number | null
         }
         Update: {
           submission_id?: string
           postal_code?: string
           residency_status?: string
           visa_type?: string | null
-          visa_situation?: string | null
+          other_status?: string | null
           opted_in?: boolean
-          age?: string | null
-          writing_for?: string | null
+          writing_for?: string
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
           years_in_uk?: string | null
           immigration_concerns?: string | null
-          email_content?: string | null
-          representatives_contacted?: string[] | null
+          mp_name?: string | null
+          mp_address_as?: string | null
+          mp_party?: string | null
+          mp_constituency?: string | null
+          mp_email?: string | null
+          mp_phone?: string | null
+          mp_member_id?: string | number | null
         }
-      }
-      postal_code_representatives: {
+      },
+      employer_submissions: {
         Row: {
           id: string
+          submission_id: string
           postal_code: string
-          representative_type: string
-          name: string
-          email: string
-          party: string | null
-          constituency: string | null
+          residency_status: string
+          visa_type: string | null
+          other_status: string | null
+          opted_in: boolean
+          writing_for: string
+          industry?: string | null
+          company_size?: string | null
+          yearly_revenue?: string | null
+          current_overseas_employees?: string | null
+          planned_overseas_hires?: string | null
+          immigration_concerns?: string | null
+          mp_name?: string | null
+          mp_address_as?: string | null
+          mp_party?: string | null
+          mp_constituency?: string | null
+          mp_email?: string | null
+          mp_phone?: string | null
+          mp_member_id?: string | number | null
           created_at: string
         }
         Insert: {
+          submission_id: string
           postal_code: string
-          representative_type: string
-          name: string
-          email: string
-          party?: string | null
-          constituency?: string | null
+          residency_status: string
+          visa_type?: string | null
+          other_status?: string | null
+          opted_in?: boolean
+          writing_for?: string
+          industry?: string | null
+          company_size?: string | null
+          yearly_revenue?: string | null
+          current_overseas_employees?: string | null
+          planned_overseas_hires?: string | null
+          immigration_concerns?: string | null
+          mp_name?: string | null
+          mp_address_as?: string | null
+          mp_party?: string | null
+          mp_constituency?: string | null
+          mp_email?: string | null
+          mp_phone?: string | null
+          mp_member_id?: string | number | null
         }
         Update: {
+          submission_id?: string
           postal_code?: string
-          representative_type?: string
-          name?: string
-          email?: string
-          party?: string | null
-          constituency?: string | null
+          residency_status?: string
+          visa_type?: string | null
+          other_status?: string | null
+          opted_in?: boolean
+          writing_for?: string
+          industry?: string | null
+          company_size?: string | null
+          yearly_revenue?: string | null
+          current_overseas_employees?: string | null
+          planned_overseas_hires?: string | null
+          immigration_concerns?: string | null
+          mp_name?: string | null
+          mp_address_as?: string | null
+          mp_party?: string | null
+          mp_constituency?: string | null
+          mp_email?: string | null
+          mp_phone?: string | null
+          mp_member_id?: string | number | null
         }
-      }
+      },
     }
   }
 }

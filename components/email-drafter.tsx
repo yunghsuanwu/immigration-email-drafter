@@ -1178,6 +1178,8 @@ export function EmailDrafter() {
                               setGeneratedEmail("");
                               setEditedEmail("");
                               setSubmissionId("");
+                              setMpInfo(null);
+                              setCurrentSection("basic-info");
                               setActiveTab("input");
                             }}>
                               <Send className="mr-2 h-4 w-4" />

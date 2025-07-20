@@ -23,6 +23,7 @@ export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promi
     visa_type: data.visaType || null,
     other_status: data.residentialStatusOther || null,
     opted_in: data.optInDataCollection,
+    writing_for: data.whyWriting,
     mp_name: mpInfo?.nameFullTitle || null,
     mp_address_as: mpInfo?.nameAddressAs || null,
     mp_party: mpInfo?.partyName || null,
