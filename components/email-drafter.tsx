@@ -34,7 +34,6 @@ export function EmailDrafter() {
   const [activeTab, setActiveTab] = useState("input")
   const [currentSection, setCurrentSection] = useState("basic-info")
   const [isGenerating, setIsGenerating] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
   const [generatedEmail, setGeneratedEmail] = useState("")
   const [editedEmail, setEditedEmail] = useState("")
   const [submissionId, setSubmissionId] = useState("")
@@ -170,7 +169,6 @@ export function EmailDrafter() {
 
   const onSubmit = async (data: FormData) => {
     setIsGenerating(true)
-    setIsSaving(true)
     console.log("Form data submitted:", data)
     console.log("MP Info submitted:", mpInfo)
     let email: string | null = null;
@@ -194,7 +192,6 @@ export function EmailDrafter() {
             description: "Failed to generate email. Please try again.",
           })
           setIsGenerating(false)
-          setIsSaving(false)
           return
         }
       }
@@ -239,7 +236,6 @@ export function EmailDrafter() {
       }
     } finally {
       setIsGenerating(false)
-      setIsSaving(false)
     }
   }
 
