@@ -16,7 +16,7 @@ type MPInfo = {
 export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promise<string> {
   const submissionId = `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
-  let submissionData: Record<string, any> = {
+  let submissionData: Record<string, unknown> = {
     submission_id: submissionId,
     postal_code: data.postalCode,
     residency_status: data.residentialStatus,
