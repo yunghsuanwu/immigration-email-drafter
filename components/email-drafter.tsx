@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Loader2, Send, ArrowRight, ArrowLeft, Info, Shield, ChevronDown } from "lucide-react"
+import { Loader2, Send, ArrowRight, ArrowLeft, Info, PencilLine, Shield, ChevronDown } from "lucide-react"
 import { EmailEditor } from "@/components/email-editor"
 import { generateMPEmail } from "@/lib/generate-mp-email"
 import { saveUserSubmission } from "@/lib/database"
@@ -36,8 +36,9 @@ export function EmailDrafter() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedEmail, setGeneratedEmail] = useState("")
   const [editedEmail, setEditedEmail] = useState("")
-  const [submissionId, setSubmissionId] = useState("")
+  const [canSend, setCanSend] = useState(false);
   const [isProTipsOpen, setIsProTipsOpen] = useState(false)
+  const [isExplainerOpen, setIsExplainerOpen] = useState(false)
   const [yearsInUKInvalid, setYearsInUKInvalid] = useState(false)
   const [socInvalid, setSocInvalid] = useState(false)
   const [annualTaxInvalid, setAnnualTaxInvalid] = useState(false)
@@ -222,8 +223,7 @@ export function EmailDrafter() {
         dataToSave.constituentEmail = "";
       }
       try {
-        const submissionIdGenerated = await saveUserSubmission(dataToSave, mpInfo || undefined)
-        setSubmissionId(submissionIdGenerated)
+        await saveUserSubmission(dataToSave, mpInfo || undefined)
       } catch {
         toast({
           title: "Save failed",
@@ -251,14 +251,37 @@ export function EmailDrafter() {
   return (
     <Card className="w-full min-h-[700px] flex flex-col">
       <CardHeader>
-        <CardTitle>Re:Immigration Email Drafter</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <PencilLine className="h-4 w-4" />
+          Re:Immigration Email Drafter
+          </CardTitle>
         <CardDescription>
-          <ul className="list-disc pl-5">
-            <li>Answer the following questions to help your MP understand your situation.</li>
-            <li>This tool uses state-of-the-art AI models (Claude and GPT) to generate a personalised email for you.</li>
-            <li>Answer as much as you like; but the more you answer, the stronger your email will be.</li>
-            <li>Questions with an asterisk (*) are highly recommended.</li>
-          </ul>
+        <div>
+          <Button 
+            type="button"
+            variant="ghost" 
+            className="justify-between p-2 h-auto hover:bg-gray-200 cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsExplainerOpen(!isExplainerOpen);
+            }}
+          >
+            <span className="flex items-center gap-2">How does it work?</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${isExplainerOpen ? 'rotate-180' : ''}`} />
+          </Button>
+          
+          {isExplainerOpen && (
+            <div className="px-5 pt-1">
+              <ul className="text-sm list-disc list-inside space-y-1 text-muted-foreground">
+                <li>Answer the following questions to help your MP understand your situation.</li>
+                <li>This tool then uses AI models (Claude and GPT) to generate a personalised email for you.</li>
+                <li>Answer as much as you&apos;d like; but the more specific you are, the stronger your email.</li>
+                <li>Questions with an asterisk (*) are highly recommended.</li>
+              </ul>
+            </div>
+          )}
+        </div>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col">
@@ -268,7 +291,7 @@ export function EmailDrafter() {
             <TabsTrigger value="edit" disabled={!generatedEmail}>
               Edit
             </TabsTrigger>
-            <TabsTrigger value="send" disabled={!submissionId}>
+            <TabsTrigger value="send" disabled={!canSend}>
               Send
             </TabsTrigger>
           </TabsList>
@@ -993,16 +1016,16 @@ export function EmailDrafter() {
                 {/* Data Collection Section */}
                 {currentSection === "data-collection" && (
                   <div className="space-y-12">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Data Collection</h3>
-
-                      <Alert>
-                        <Shield className="h-4 w-4" />
-                        <AlertDescription>
-                          <strong>Privacy Notice:</strong> By default, we only save your postal code, your reason for writing the email, and your residency status to our database. Other data you filled in (including your name and email) are not saved unless you consent to it. You can opt in below to help us with research or to receive updates.
-                        </AlertDescription>
-                      </Alert>
-
+                    <div className="space-y-8">
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Data Collection</h3>
+                        <span className="flex items-start gap-2">
+                          <Shield className="w-7 h-5" />
+                          <p className="text-sm text-muted-foreground">
+                            By default, we only save your <strong>postal code</strong>, <strong>reason for writing the email</strong>, and <strong>residency status</strong> to our database. Other data you filled in are not saved unless you consent to it. Opt in below to help us with research or to receive updates.
+                          </p>
+                        </span>
+                      </div>
                       <FormField
                         control={form.control}
                         name="optInDataCollection"
@@ -1014,7 +1037,7 @@ export function EmailDrafter() {
                             <div className="space-y-1 leading-none cursor-pointer select-text">
                               <FormLabel>Help with research (optional)</FormLabel>
                               <FormDescription>
-                                Allow us to save all additional data (income, profession, concerns) to help with immigration policy research. Your name will never be saved.
+                                I consent to my form data (excluding my name and email address) being stored, processed, and used for immigration policy research purposes.
                               </FormDescription>
                             </div>
                           </FormItem>
@@ -1032,7 +1055,7 @@ export function EmailDrafter() {
                             <div className="space-y-1 leading-none cursor-pointer select-text">
                               <FormLabel>Save your email (optional)</FormLabel>
                               <FormDescription>
-                                Allow us to email you about updates on this tool, the Not A Stranger initiative and future campaigns. Your email will only be used for this purpose.
+                                I consent to my email address being stored, processed, and used for the purpose of receiving updates about Re:Immigration, the Not A Stranger initiative, and relevant campaigns.
                               </FormDescription>
                             </div>
                           </FormItem>
@@ -1048,6 +1071,7 @@ export function EmailDrafter() {
                         </Alert>
                       )}
                     </div>
+                    
 
                     <div className="flex gap-4">
                       <Button type="button" variant="outline" onClick={handlePreviousSection} className="flex-1 hover:bg-gray-200 cursor-pointer">
@@ -1086,7 +1110,7 @@ export function EmailDrafter() {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Personalise
                   </Button>
-                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => setActiveTab("send")}> 
+                  <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => { setCanSend(true); setActiveTab("send"); }}> 
                     Continue to Send
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -1131,7 +1155,7 @@ export function EmailDrafter() {
 
                       return (
                         <div className="space-y-2">
-                          <p className="text-sm font-bold">Copy the following fields respectively in your personal email to send.</p>
+                          <p className="text-sm text-muted-foreground">Copy the following fields respectively in your personal email to send.</p>
                           <div className="flex items-center text-sm">
                             <span className="font-bold mr-2">To:</span>
                             <span className="bg-gray-50 p-1 rounded border">{to}</span>
@@ -1177,10 +1201,10 @@ export function EmailDrafter() {
                               form.reset();
                               setGeneratedEmail("");
                               setEditedEmail("");
-                              setSubmissionId("");
                               setMpInfo(null);
                               setCurrentSection("basic-info");
                               setActiveTab("input");
+                              setCanSend(false);
                             }}>
                               <Send className="mr-2 h-4 w-4" />
                               Draft another email

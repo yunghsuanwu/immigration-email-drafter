@@ -17,13 +17,16 @@ export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promi
   const submissionId = `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
   let submissionData: Record<string, unknown> = {
+    // By default, it saves postal code, residency status, and the reason for writing
     submission_id: submissionId,
     postal_code: data.postalCode,
     residency_status: data.residentialStatus,
     visa_type: data.visaType || null,
     other_status: data.residentialStatusOther || null,
-    opted_in: data.optInDataCollection,
+    opted_in_data: data.optInDataCollection,
+    opted_in_updates: data.optInUpdates,
     writing_for: data.whyWriting,
+    // MP info will be saved
     mp_name: mpInfo?.nameFullTitle || null,
     mp_address_as: mpInfo?.nameAddressAs || null,
     mp_party: mpInfo?.partyName || null,
@@ -46,6 +49,12 @@ export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promi
         immigration_concerns: data.immigrationConcerns,
       };
     }
+    if (data.optInUpdates) {
+      submissionData = {
+        ...submissionData,
+        constituent_email: data.constituentEmail,
+      };
+    }
   } else {
     // Only include non-employer additional fields if opted in
     if (data.optInDataCollection) {
@@ -56,6 +65,12 @@ export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promi
         annual_tax_contribution: data.annualTaxContribution || null,
         years_in_uk: data.yearsInUK || null,
         immigration_concerns: data.immigrationConcerns,
+      };
+    }
+    if (data.optInUpdates) {
+      submissionData = {
+        ...submissionData,
+        constituent_email: data.constituentEmail,
       };
     }
   }

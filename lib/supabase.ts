@@ -16,8 +16,10 @@ export type Database = {
           residency_status: string
           visa_type: string | null
           other_status: string | null
-          opted_in: boolean
+          opted_in_data: boolean
+          opted_in_updates: boolean
           writing_for: string
+          constituent_email?: string | null
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
@@ -38,8 +40,10 @@ export type Database = {
           residency_status: string
           visa_type?: string | null
           other_status?: string | null
-          opted_in?: boolean
+          opted_in_data?: boolean
+          opted_in_updates?: boolean
           writing_for?: string
+          constituent_email?: string | null
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
@@ -59,8 +63,10 @@ export type Database = {
           residency_status?: string
           visa_type?: string | null
           other_status?: string | null
-          opted_in?: boolean
+          opted_in_data?: boolean
+          opted_in_updates?: boolean
           writing_for?: string
+          constituent_email?: string | null
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
@@ -83,8 +89,10 @@ export type Database = {
           residency_status: string
           visa_type: string | null
           other_status: string | null
-          opted_in: boolean
+          opted_in_data: boolean
+          opted_in_updates: boolean
           writing_for: string
+          constituent_email?: string | null
           industry?: string | null
           company_size?: string | null
           yearly_revenue?: string | null
@@ -106,8 +114,10 @@ export type Database = {
           residency_status: string
           visa_type?: string | null
           other_status?: string | null
-          opted_in?: boolean
+          opted_in_data?: boolean
+          opted_in_updates?: boolean
           writing_for?: string
+          constituent_email?: string | null
           industry?: string | null
           company_size?: string | null
           yearly_revenue?: string | null
@@ -128,8 +138,10 @@ export type Database = {
           residency_status?: string
           visa_type?: string | null
           other_status?: string | null
-          opted_in?: boolean
+          opted_in_data?: boolean
+          opted_in_updates?: boolean
           writing_for?: string
+          constituent_email?: string | null
           industry?: string | null
           company_size?: string | null
           yearly_revenue?: string | null
@@ -145,6 +157,7 @@ export type Database = {
           mp_member_id?: string | number | null
         }
       },
+
     }
   }
 }
