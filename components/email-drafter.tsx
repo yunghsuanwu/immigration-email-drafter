@@ -859,7 +859,7 @@ export function EmailDrafter() {
                                 placeholder={
                                   watchWhyWriting === "employer"
                                     ? "Please describe how the immigration changes might affect your business operations, hiring plans, or company growth...\n\nFor example, 'I fear that the new rules will make it harder for me to hire skilled workers in an industry highly reliant on foreign talents...'"
-                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community...\n\nFor example, 'I fear that the new rules will make it harder for me to move my family, even though I've established a life here...'"
+                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community...\n\nFor example, 'I fear that the new rules will make it harder for me to move my family, even though I have established a life here...'"
                                 }
                                 className="min-h-[120px] placeholder:italic placeholder:text-gray-400 select-text"
                                 {...field}
