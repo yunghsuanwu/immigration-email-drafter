@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 {/*import { Button } from "@/components/ui/button"*/}
 {/*import { Mail, History, Users } from "lucide-react"*/}
-import { Mail } from "lucide-react"
+import { PencilLine } from "lucide-react"
 
 export function NavBar() {
 
@@ -12,7 +12,7 @@ export function NavBar() {
     <nav className="border-b">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
-          <Mail className="h-6 w-6 mr-2 text-[#4a90e2]" />
+          <PencilLine className="h-6 w-6 mr-2 text-[#4a90e2]" />
           <span className="font-bold text-lg text-[#4a90e2]">Re:Immigration Email Drafter</span>
         </div>
         <div className="flex justify-end gap-2">

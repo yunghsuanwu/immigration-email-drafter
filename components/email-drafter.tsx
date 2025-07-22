@@ -1227,7 +1227,7 @@ export function EmailDrafter() {
             Privacy notice: The only data we save by default is your postal code, your reason for writing the email, and your residency status. 
             You can find our full data and privacy policy{" "}
             <a 
-              href="https://notastranger.org/privacy" 
+              href="/privacy" 
               target="_blank" 
               rel="noopener noreferrer"
               className="underline"

@@ -68,8 +68,9 @@
   /* Interactive */
   --cta: #ff6b35; /* Orange */
   --button-secondary: #4a90e2; /* Blue */
-  --link: #20c997; /* Teal */
-  --hover-orange: #ff8c5a; /* Lighter orange */
+  --link: #ff8c5a; /* Lighter orange */
+  --hover-teal: #20c997; /* Teal */
+
 
   /* Border, input, ring, etc. */
   --border: #ced4da;
@@ -109,8 +110,8 @@
 
   --cta: #ff6b35;
   --button-secondary: #4a90e2;
-  --link: #20c997;
-  --hover-orange: #ff8c5a;
+  --link: #ff8c5a; /* Lighter orange */
+  --hover-teal: #20c997; /* Teal */
 
   --border: #363636;
   --input: #2d2d2d;
@@ -151,16 +152,7 @@ a {
   transition: color 0.2s;
 }
 a:hover {
-  color: var(--hover-orange);
-}
-
-.custom-green-link {
-  color: var(--accent);
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-.custom-green-link:hover {
-  color: var(--headline-primary);
+  color: var(--hover-teal);
 }
 
 /* Custom placeholder styling */
