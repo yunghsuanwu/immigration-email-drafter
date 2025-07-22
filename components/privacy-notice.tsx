@@ -24,7 +24,7 @@ export function PrivacyNotice() {
         >
           Not A Stranger
         </a>{' '}
-        (notastranger.org) is a migrant-led initiative by young civic technologists building their lives in the UK. It was created in response to the government's{' '}
+        (notastranger.org) is a migrant-led initiative by young civic technologists building their lives in the UK. It was created in response to the government&apos;s{' '}
         <a
           href="https://www.gov.uk/government/publications/restoring-control-over-the-immigration-system-white-paper"
           className="underline"
@@ -33,7 +33,7 @@ export function PrivacyNotice() {
         >
           2025 white paper on immigration
         </a>
-        {', '}which includes sweeping changes to the path to citizenship and further restrictions on migrants' rights. In the face of growing anti-immigrant rhetoric, we're developing digital tools that empower migrants not only to be heard -- but to shape the policies that affect our communities.
+        {', '}which includes sweeping changes to the path to citizenship and further restrictions on migrants&apos; rights. In the face of growing anti-immigrant rhetoric, we're developing digital tools that empower migrants not only to be heard -- but to shape the policies that affect our communities.
       </p>
       <p className="mb-8">
         <strong>Contact us by email:</strong> contact[at]notastranger[dot]org
@@ -64,7 +64,7 @@ export function PrivacyNotice() {
       <ul className="list-disc list-outside mb-4 ml-4 pl-4">
         <li>Your postal code</li>
         <li>Your residency status (e.g., UK national, visa holder, other statuses)</li>
-        <li>Your visa type (if you're a visa holder)</li>
+        <li>Your visa type (if you&apos;re a visa holder)</li>
         <li>Your explanation of other statuses (if applicable)</li>
         <li>Your reason for writing the email</li>
       </ul>
@@ -84,9 +84,9 @@ export function PrivacyNotice() {
         <li>Your profession/job title</li>
         <li>Your Standard Occupational Code (SOC)</li>
         <li>Your annual tax contribution (estimated)</li>
-        <li>Your company's industry and size</li>
-        <li>Your company's yearly revenue (in brackets)</li>
-        <li>Your company's current and envisaged number of employees on visa</li>
+        <li>Your company&apos;s industry and size</li>
+        <li>Your company&apos;s yearly revenue (in brackets)</li>
+        <li>Your company&apos;s current and envisaged number of employees on visa</li>
         <li>Your immigration concerns</li>
       </ul>
       <p className="mb-4">
@@ -145,7 +145,7 @@ export function PrivacyNotice() {
 
       <h2 className="text-2xl font-semibold mt-10 mb-6">Complaints</h2>
       <p className="mb-8">
-        If you believe we have mishandled your personal data, you have the right to lodge a complaint with the Information Commissioner's Office (ICO). You can{' '}
+        If you believe we have mishandled your personal data, you have the right to lodge a complaint with the Information Commissioner&apos;s Office (ICO). You can{' '}
         <a
           href="https://ico.org.uk/make-a-complaint/data-protection-complaints/"
           className="underline"
