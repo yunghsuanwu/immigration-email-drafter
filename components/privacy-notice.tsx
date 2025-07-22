@@ -33,7 +33,7 @@ export function PrivacyNotice() {
         >
           2025 white paper on immigration
         </a>
-        {', '}which includes sweeping changes to the path to citizenship and further restrictions on migrants&apos; rights. In the face of growing anti-immigrant rhetoric, we're developing digital tools that empower migrants not only to be heard -- but to shape the policies that affect our communities.
+        {', '}which includes sweeping changes to the path to citizenship and further restrictions on migrants&apos; rights. In the face of growing anti-immigrant rhetoric, we&apos;re developing digital tools that empower migrants not only to be heard -- but to shape the policies that affect our communities.
       </p>
       <p className="mb-8">
         <strong>Contact us by email:</strong> contact[at]notastranger[dot]org
@@ -59,7 +59,7 @@ export function PrivacyNotice() {
       <h2 className="text-2xl font-semibold mt-10 mb-6">What personal information we collect and why</h2>
       <h3 className="text-xl font-semibold mt-8 mb-4">Information we collect by default</h3>
       <p className="mb-2">
-        When you use the "Generate Email to MP" function, we collect and store the following information:
+        When you use the &quot;Generate Email to MP&quot; function, we collect and store the following information:
       </p>
       <ul className="list-disc list-outside mb-4 ml-4 pl-4">
         <li>Your postal code</li>
@@ -69,7 +69,7 @@ export function PrivacyNotice() {
         <li>Your reason for writing the email</li>
       </ul>
       <p className="mb-4">
-        <strong>Why we collect this:</strong> We use this information to understand the geographical coverage of our tool's use and engagement statistics of user groups by residency status.
+        <strong>Why we collect this:</strong> We use this information to understand the geographical coverage of our tool&apos;s use and engagement statistics of user groups by residency status.
       </p>
       
       <p className="mb-4">
@@ -79,7 +79,7 @@ export function PrivacyNotice() {
       <h3 className="text-xl font-semibold mt-8 mb-4">Optional research data (with your consent)</h3>
       <p className="mb-2">If you opt in to help with research, we will also collect:</p>
       <ul className="list-disc list-outside mb-4 ml-4 pl-4">
-        <li>How long you've been in the UK</li>
+        <li>How long you&apos;ve been in the UK</li>
         <li>Your yearly income (in brackets)</li>
         <li>Your profession/job title</li>
         <li>Your Standard Occupational Code (SOC)</li>
@@ -105,7 +105,7 @@ export function PrivacyNotice() {
         <strong>Legal basis:</strong> Consent (GDPR Article 6(1)(a)) - you can withdraw your consent at any time by contacting us.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-6">What we don't collect</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-6">What we don&apos;t collect</h2>
       <p className="mb-2">We do not store:</p>
       <ul className="list-disc list-outside mb-4 ml-4 pl-4">
         <li>Your name</li>
@@ -118,7 +118,7 @@ export function PrivacyNotice() {
 
       <h2 className="text-2xl font-semibold mt-10 mb-6">How we store and protect your data</h2>
       <p className="mb-4">Your data is stored in a database hosted on Supabase, an open-source Postgres development platform, and we process your data in the EU.</p>
-      <p className="mb-8">When you use "Draft another email," the form's data resets to blank, but previously submitted data remains in our database according to the retention periods below.</p>
+      <p className="mb-8">When you use &quot;Draft another email,&quot; the form&apos;s data resets to blank, but previously submitted data remains in our database according to the retention periods below.</p>
 
       <h2 className="text-2xl font-semibold mt-10 mb-6">How long we keep your data</h2>
       <ul className="list-disc list-outside mb-4 ml-4 pl-4">
