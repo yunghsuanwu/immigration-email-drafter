@@ -13,7 +13,7 @@ export function HeroSection() {
       <div className="max-w-3xl mx-auto flex flex-col gap-8 items-start md:items-center">
         <h1 className="text-5xl md:text-7xl font-bold mb-2">Immigration Rule Change Is Imminent.</h1>
         <span className="block text-xl md:text-2xl font-medium text-muted-foreground tracking-tight mb-2">
-          Without debate, without consultation, new immigration rules have arrived at the UK Parliament on 22 July 2025.
+          Without public debate, without consultation, new immigration rules have arrived at the UK Parliament on 22 July 2025.
         </span>
         <button
           type="button"
