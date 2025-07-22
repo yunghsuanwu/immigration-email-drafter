@@ -18,32 +18,42 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
     throw new Error("OpenAI API key is not configured")
   }
 
-  const details: string[] = [
+  const details_user: string[] = [
     `- Name: ${data.constituentName}`
   ];
 
   // Handle residential status with all possible cases
   if (data.residentialStatus === "uk-national") {
-    details.push(`- Residential Status: UK national`);
+    details_user.push(`- Residential Status: UK national`);
   } else if (data.residentialStatus === "indefinite-leave-to-remain") {
-    details.push(`- Residential Status: Indefinite leave to remain (ILR)`);
+    details_user.push(`- Residential Status: Indefinite leave to remain (ILR)`);
   } else if (data.residentialStatus === "settled-status") {
-    details.push(`- Residential Status: Settled status under the EU Settlement Scheme`);
+    details_user.push(`- Residential Status: Settled status under the EU Settlement Scheme`);
   } else if (data.residentialStatus === "visa-holder") {
     let visaLine = `- Residential Status: Visa holder`;
     if (data.visaType) visaLine += ` (${data.visaType})`;
-    details.push(visaLine);
+    details_user.push(visaLine);
   } else if (data.residentialStatus === "other-status") {
     let otherLine = `- Residential Status: Other`;
     if (data.residentialStatusOther) otherLine += ` (${data.residentialStatusOther})`;
-    details.push(otherLine);
+    details_user.push(otherLine);
   }
 
-  if (data.yearlyIncome) details.push(`- Yearly Income: ${data.yearlyIncome}`);
-  if (data.profession) details.push(`- Profession: ${data.profession}`);
-  if (data.annualTaxContribution) details.push(`- Annual Tax Contribution: £${data.annualTaxContribution}`);
-  if (data.yearsInUK) details.push(`- Years in UK: ${data.yearsInUK}`);
-  if (data.SOC) details.push(`- SOC: ${data.SOC}`);
+  if (data.yearlyIncome) details_user.push(`- Yearly Income: ${data.yearlyIncome}`);
+  if (data.profession) details_user.push(`- Profession: ${data.profession}`);
+  if (data.annualTaxContribution) details_user.push(`- Annual Tax Contribution: £${data.annualTaxContribution}`);
+  if (data.yearsInUK) details_user.push(`- Years in UK: ${data.yearsInUK}`);
+  if (data.SOC) details_user.push(`- SOC: ${data.SOC}`);
+
+  const details_employer: string[] = [
+    `- Name: ${data.constituentName}`
+  ]
+
+  if (data.industry) details_employer.push(`– Industry: ${data.industry}`);
+  if (data.companySize) details_employer.push(`– Company Size: ${data.companySize}`);
+  if (data.yearlyRevenue) details_employer.push(`– Yearly Revenue: £${data.yearlyRevenue}`);
+  if (data.currentOverseasEmployees) details_employer.push(`– Current Overseas Employees: ${data.currentOverseasEmployees}`);
+  if (data.plannedOverseasHires) details_employer.push(`– Planned Overseas Hires: ${data.plannedOverseasHires}`);
 
   // Use MP name and constituency if available
   const mpName = mpInfo?.nameAddressAs || "[MP's Name]";
@@ -69,7 +79,7 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
     Harry Paulson
 
     Use the following constituent details:
-    ${details.join('\n')}
+    ${details_user.join('\n')}
     
     Immigration Concerns:
     ${data.immigrationConcerns}
@@ -112,7 +122,7 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
     [Constitutent Name]
 
     Use the following constituent details:
-    ${details.join('\n')}
+    ${details_employer.join('\n')}
     
     Immigration Concerns:
     ${data.immigrationConcerns}

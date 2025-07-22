@@ -18,6 +18,7 @@ export type FormData = {
   currentOverseasEmployees?: string
   plannedOverseasHires?: string
   immigrationConcerns: string
+  // Data collection consent
   optInDataCollection: boolean
   optInUpdates: boolean
 }
