@@ -350,7 +350,7 @@ export function EmailDrafter() {
                                     onChange={() => field.onChange("visa-employee")}
                                     className="cursor-pointer"
                                   />
-                                  <span>I am an employee on visa.</span>
+                                  <span>I am on a visa and will be affected.</span>
                                 </label>
                                 <label className="flex items-center space-x-2 cursor-pointer select-text">
                                   <input
@@ -601,7 +601,7 @@ export function EmailDrafter() {
                             <FormLabel>Standard Occupational Code (SOC)</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="e.g., 1111" 
+                                placeholder="This is a four-digit code. If unsure, leave it blank or look it up." 
                                 className="placeholder:text-gray-400 placeholder:italic select-text" 
                                 maxLength={4}
                                 {...field}
@@ -615,8 +615,6 @@ export function EmailDrafter() {
                                     setSocInvalid(true);
                                   }
                                 }}
-                                onFocus={() => setIsFocused("SOC")}
-                                onBlur={() => setIsFocused(null)}
                               />
                             </FormControl>
                             {socInvalid && (
@@ -624,8 +622,7 @@ export function EmailDrafter() {
                                 Please only input your four-digit SOC.
                               </p>
                             )}
-                            {isFocused === "SOC" && (
-                              <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
+                            <FormDescription className="text-gray-400 italic">The government uses SOC to determine Skilled Worker visa eligiblity. Find yours with the{" "}
                               <a
                                 href="https://www.gov.uk/government/publications/skilled-worker-visa-eligible-occupations/skilled-worker-visa-eligible-occupations-and-codes"
                                 target="_blank" 
@@ -635,7 +632,6 @@ export function EmailDrafter() {
                                 official CASCOT tool
                               </a>.
                             </FormDescription>
-                            )}
                             <FormMessage />
                           </FormItem>
                         )}
@@ -862,8 +858,8 @@ export function EmailDrafter() {
                               <Textarea
                                 placeholder={
                                   watchWhyWriting === "employer"
-                                    ? "Please describe how the immigration changes might affect your business operations, hiring plans, or company growth..."
-                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community..."
+                                    ? "Please describe how the immigration changes might affect your business operations, hiring plans, or company growth...\n\nFor example, 'I fear that the new rules will make it harder for me to hire skilled workers in an industry highly reliant on foreign talents...'"
+                                    : "Please describe how the immigration changes will affect you (professionally and personally), your family, or your community...\n\nFor example, 'I fear that the new rules will make it harder for me to move my family, even though I've established a life here...'"
                                 }
                                 className="min-h-[120px] placeholder:italic placeholder:text-gray-400 select-text"
                                 {...field}
