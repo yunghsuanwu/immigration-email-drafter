@@ -41,7 +41,7 @@ export function PrivacyNotice() {
 
       <h2 className="text-2xl font-semibold mt-10 mb-6">What is Re:Immigration?</h2>
       <p className="mb-4">
-        Re:Immigration is a large language model-based email drafting tool developed under this initiative. It helps users convey to policy makers how immigration rule changes would impact them, and will be used to catalyse responses at scale to the public whitepaper consultation expected in the coming months.
+        Re:Immigration is a large language model-based email drafting tool developed under this initiative. It helps users convey to policymakers how immigration rule changes would impact them, and will be used to catalyse responses at scale to the public whitepaper consultation expected in the coming months.
       </p>
       <p className="mb-8">
         <strong>Important:</strong> This tool does not help you send the email to your Member of Parliament (MP); you must manually copy and paste the generated content into your personal email tool and send it yourself. We highly recommend{' '}
