@@ -28,7 +28,7 @@ export function RuleChange() {
           </ul>
         </div>
         <p>
-          We're currently working with experts to provide a detailed summary on what these changes may mean for different stakeholders, including visa holders, those with indefinite leave to remain/settled status, employers, and beyond. 
+          We&apos;re currently working with experts to provide a detailed summary on what these changes may mean for different stakeholders, including visa holders, those with indefinite leave to remain/settled status, employers, and beyond. 
         </p>
         <p>
           In the meantime, we encourage you to check out some resources that other migrant advisory bodies and migrants rights groups have already compiled:
