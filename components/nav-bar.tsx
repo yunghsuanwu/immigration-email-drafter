@@ -9,18 +9,23 @@ export function NavBar() {
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <Link href="/">
           <div className="flex items-center">
             <PencilLine className="h-6 w-6 mr-2 text-[#4a90e2]" />
             <span className="font-bold text-lg !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
-              Re:Immigration Email Drafter
+              Re:Immigration
             </span>
           </div>
           </Link>
           <Link href="/privacy">
             <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
               Privacy Notice
+            </span>
+          </Link>
+          <Link href="/about">
+            <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
+              About Immigration Rules
             </span>
           </Link>
         </div>

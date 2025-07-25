@@ -6,7 +6,7 @@ export function PrivacyNotice() {
     >
       <h1 className="text-3xl font-bold mb-10 text-center">Privacy Notice for Re:Immigration</h1>
       
-      <p className="mb-4 text-center">
+      <p className="mb-10 text-center">
         <strong>Last updated:</strong> {new Date().toLocaleDateString('en-GB', { 
           day: 'numeric',
           month: 'long',

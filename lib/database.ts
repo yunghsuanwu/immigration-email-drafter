@@ -49,12 +49,7 @@ export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promi
         immigration_concerns: data.immigrationConcerns,
       };
     }
-    if (data.optInUpdates) {
-      submissionData = {
-        ...submissionData,
-        constituent_email: data.constituentEmail,
-      };
-    }
+    // Email data is now handled separately in the email_subscriptions table
   } else {
     // Only include non-employer additional fields if opted in
     if (data.optInDataCollection) {
@@ -67,21 +62,34 @@ export async function saveUserSubmission(data: FormData, mpInfo?: MPInfo): Promi
         immigration_concerns: data.immigrationConcerns,
       };
     }
-    if (data.optInUpdates) {
-      submissionData = {
-        ...submissionData,
-        constituent_email: data.constituentEmail,
-      };
-    }
+    // Email data is now handled separately in the email_subscriptions table
   }
 
   // Save to different table for employers
   const tableName = data.whyWriting === "employer" ? "employer_submissions" : "user_submissions";
-  const { error } = await supabase.from(tableName).insert(submissionData)
+  const { error: submissionError } = await supabase.from(tableName).insert(submissionData)
 
-  if (error) {
-    console.error("Error saving submission:", error)
+  if (submissionError) {
+    console.error("Error saving submission:", submissionError)
     throw new Error("Failed to save submission")
+  }
+
+  // Save email subscription if user opted in
+  if (data.optInUpdates && data.constituentEmail) {
+    const emailSubscriptionData = {
+      submission_id: submissionId,
+      constituent_email: data.constituentEmail,
+      opted_in_updates: true,
+      writing_for: data.whyWriting
+    }
+
+    const { error: emailError } = await supabase.from('email_subscriptions').insert(emailSubscriptionData)
+
+    if (emailError) {
+      console.error("Error saving email subscription:", emailError)
+      // Don't throw error here as the main submission was successful
+      // But you might want to log this for monitoring
+    }
   }
 
   return submissionId

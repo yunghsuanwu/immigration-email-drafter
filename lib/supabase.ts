@@ -12,6 +12,28 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 export type Database = {
   public: {
     Tables: {
+      email_subscriptions: {
+        Row: {
+          id: string
+          submission_id: string
+          constituent_email: string
+          opted_in_updates: boolean
+          writing_for: string
+          created_at: string
+        }
+        Insert: {
+          submission_id: string
+          constituent_email: string
+          opted_in_updates?: boolean
+          writing_for: string
+        }
+        Update: {
+          submission_id?: string
+          constituent_email?: string
+          opted_in_updates?: boolean
+          writing_for?: string
+        }
+      },
       user_submissions: {
         Row: {
           id: string
@@ -23,7 +45,6 @@ export type Database = {
           opted_in_data: boolean
           opted_in_updates: boolean
           writing_for: string
-          constituent_email?: string | null
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
@@ -47,7 +68,6 @@ export type Database = {
           opted_in_data?: boolean
           opted_in_updates?: boolean
           writing_for?: string
-          constituent_email?: string | null
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
@@ -70,7 +90,6 @@ export type Database = {
           opted_in_data?: boolean
           opted_in_updates?: boolean
           writing_for?: string
-          constituent_email?: string | null
           yearly_income?: string | null
           profession?: string | null
           annual_tax_contribution?: string | null
@@ -96,7 +115,6 @@ export type Database = {
           opted_in_data: boolean
           opted_in_updates: boolean
           writing_for: string
-          constituent_email?: string | null
           industry?: string | null
           company_size?: string | null
           yearly_revenue?: string | null
@@ -121,7 +139,6 @@ export type Database = {
           opted_in_data?: boolean
           opted_in_updates?: boolean
           writing_for?: string
-          constituent_email?: string | null
           industry?: string | null
           company_size?: string | null
           yearly_revenue?: string | null
@@ -145,7 +162,6 @@ export type Database = {
           opted_in_data?: boolean
           opted_in_updates?: boolean
           writing_for?: string
-          constituent_email?: string | null
           industry?: string | null
           company_size?: string | null
           yearly_revenue?: string | null

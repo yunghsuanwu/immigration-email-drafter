@@ -5,7 +5,7 @@ export function CallToAction() {
       <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
         With the immigration rule change takes effect (
           <a
-           href="https://www.gov.uk/government/news/major-immigration-reforms-delivered-to-restore-order-and-control"
+           href="/about"
            target="_blank"
            rel="noopener noreferrer"
            className="underline"
