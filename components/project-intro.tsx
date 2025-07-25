@@ -159,6 +159,12 @@ export function RuleChange() {
           </li>
         </ul>
       </div>
+      <hr className="my-8" />
+      <div>
+        <h2 className="text-2xl font-semibold mt-10 mb-6">Contact us</h2>
+        <p className="mb-4">Are you an immigration lawyer? Do you have knowledge on immigration rules or migrant rights?</p>
+        <p className="mb-4">If you&apos;d like to contribute to this page, please contact us at: <strong>contact[at]notastranger[dot]org</strong></p>
+      </div>
     </section>
   )
 }
