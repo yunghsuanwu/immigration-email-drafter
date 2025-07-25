@@ -12,6 +12,7 @@ export default function Home() {
         <div className="my-12" />
         <EmailDrafter />
       </main>
+      <div className="my-12" />
       <Footer />
     </div>
   )
