@@ -11,7 +11,7 @@ export function HeroSection() {
   return (
     <section className="py-12 md:py-36 text-left md:text-center px-4 mb-12">
       <div className="max-w-3xl mx-auto flex flex-col gap-8 items-start md:items-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-2">Immigration Rule Change Is Imminent.</h1>
+        <h1 className="text-5xl md:text-7xl font-bold mb-2">Immigration Rule Change Is Here.</h1>
         <span className="block text-xl md:text-2xl font-medium text-muted-foreground tracking-tight mb-2">
           Without public debate, without consultation, new immigration rules have arrived at the UK Parliament on 22 July 2025.
         </span>
