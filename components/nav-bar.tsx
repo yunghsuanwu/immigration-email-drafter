@@ -18,14 +18,14 @@ export function NavBar() {
             </span>
           </div>
           </Link>
-          <Link href="/privacy">
-            <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
-              Privacy Notice
-            </span>
-          </Link>
           <Link href="/about">
             <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
               About Immigration Rules
+            </span>
+          </Link>
+          <Link href="/privacy">
+            <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
+              Privacy Notice
             </span>
           </Link>
         </div>
