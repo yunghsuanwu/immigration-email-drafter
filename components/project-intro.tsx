@@ -80,7 +80,7 @@ export function RuleChange() {
             How changes to immigration rules might affect you
           </a>
           </li>
-          <li> Migrants' Rights Network: <a
+          <li> Migrants&apos; Rights Network: <a
           href="https://migrantsrights.org.uk/2025/05/14/immigration-white-paper-summary/"
           target="_blank"
           rel="noopener noreferrer"
@@ -89,7 +89,7 @@ export function RuleChange() {
             What is the new Immigration White Paper proposing?
           </a>
           </li>
-          <li>Migrants' Rights Network: <a
+          <li>Migrants&apos; Rights Network: <a
           href="https://migrantsrights.org.uk/2025/07/24/immigration-white-paper-skilled-visa-salary-changes-come-into-force/"
           target="_blank"
           rel="noopener noreferrer"
