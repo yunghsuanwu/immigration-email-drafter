@@ -25,7 +25,10 @@ export function FeedbackButton() {
         <DialogHeader>
           <DialogTitle>Quick feedback</DialogTitle>
           <DialogDescription>
-            Tell us what worked well and what could be improved. Helps us make the tool better for everyone.
+            <p className="mb-2">
+              This tool is in continuous development; its output is ready to use, and there are more features on the way.
+            </p>
+            <p>Tell us what worked well and what could be improved.</p>
           </DialogDescription>
         </DialogHeader>
         <FeedbackForm />
