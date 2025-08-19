@@ -10,13 +10,14 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { MessageCircle } from "lucide-react"
+import { FeedbackForm } from "@/components/feedback-form"
 
 export function FeedbackButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="hover:bg-[#ff8c5a] cursor-pointer">
-          <MessageCircle className="mr-2 h-4 w-4" />
+        <Button variant="outline" size="sm" className="bg-[#ff6b35] text-white hover:bg-[#ff8c5a] cursor-pointer">
+          <MessageCircle className="h-4 w-4" />
           Give feedback
         </Button>
       </DialogTrigger>
@@ -27,6 +28,7 @@ export function FeedbackButton() {
             Tell us what worked well and what could be improved. Helps us make the tool better for everyone.
           </DialogDescription>
         </DialogHeader>
+        <FeedbackForm />
       </DialogContent>
     </Dialog>
   )
