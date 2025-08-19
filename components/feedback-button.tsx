@@ -16,7 +16,7 @@ export function FeedbackButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="bg-[#ff6b35] text-white hover:bg-[#ff8c5a] cursor-pointer">
+        <Button variant="default" size="lg" className="bg-[#ff6b35] text-white hover:bg-[#ff8c5a] hover:text-white text-md cursor-pointer shadow">
           <MessageCircle className="h-4 w-4" />
           Give feedback
         </Button>

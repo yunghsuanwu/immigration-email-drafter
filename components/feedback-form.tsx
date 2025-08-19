@@ -2,22 +2,18 @@
 
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import type { FeedbackData } from "@/types/feedback-data"
+import { saveFeedback } from "@/lib/save-feedback"
 
-type FeedbackValues = {
-  tool_rating: number
-  page_rating: number
-  category: "Bug" | "User experience" | "Page" | "Idea" | "Other"
-  comments: string
-  userEmail?: string
-  page: string
-  userAgent: string
-}
+type FeedbackValues = FeedbackData
 
 export function FeedbackForm({ onSubmitted }: { onSubmitted?: () => void}) {
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
   const form = useForm<FeedbackValues>({
     defaultValues: {
       tool_rating: 3,
@@ -43,9 +39,22 @@ export function FeedbackForm({ onSubmitted }: { onSubmitted?: () => void}) {
     form.setValue("userAgent", typeof navigator !== "undefined" ? navigator.userAgent : "")
   }, [form])
 
-  const onSubmit = (values: FeedbackValues) => {
-    console.log("feedback submit", values)
-    onSubmitted?.()
+  const onSubmit = async (values: FeedbackValues) => {
+    try {
+      await saveFeedback(values)
+      console.log("Feedback submitted successfully")
+      setIsSubmitted(true)
+      form.reset()
+
+      setTimeout(() => {
+        setIsSubmitted(false)
+      }, 2000)
+
+      onSubmitted?.()
+    } catch (err) {
+      console.error("Failed to submit feedback:", err)
+      // Optional: show error message to user
+    }
   }
 
   return (
@@ -138,14 +147,21 @@ export function FeedbackForm({ onSubmitted }: { onSubmitted?: () => void}) {
             <FormItem>
               <FormLabel>Comments (optional)</FormLabel>
               <FormControl>
-                <Textarea className="min-h-[100px] text-gray-400 italic" placeholder="Tell us more..." {...field} />
+                <Textarea className="min-h-[100px] placeholder:text-gray-400 placeholder:italic" placeholder="Tell us more..." {...field} />
               </FormControl>
             </FormItem>
           )}
         />
 
         <div className="flex justify-end gap-2 pt-2">
-          <Button type="submit" variant="default" className="bg-[#ff6b35] text-white hover:bg-[#ff8c5a] cursor-pointer">Submit feedback</Button>
+          <Button 
+            type="submit"
+            variant="default"
+            className="bg-[#ff6b35] text-white hover:bg-[#ff8c5a] cursor-pointer"
+            disabled={isSubmitted}
+          >
+            {isSubmitted ? "Thank you!" : "Submit feedback"}
+          </Button>
         </div>
       </form>
     </Form>

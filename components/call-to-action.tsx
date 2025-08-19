@@ -1,5 +1,3 @@
-import { FeedbackButton } from "@/components/feedback-button"
-
 export function CallToAction() {
   return (
     <section id="call-to-action" className="py-6 md:py-10 text-center px-4 mb-8">
@@ -22,7 +20,6 @@ export function CallToAction() {
       <p className="font-bold text-muted-foreground max-w-2xl mx-auto mt-4">
         Tell them you are not a stranger. 
       </p>
-      <FeedbackButton />
     </section>
   )
 }

@@ -56,7 +56,8 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
   if (data.plannedOverseasHires) details_employer.push(`– Planned Overseas Hires: ${data.plannedOverseasHires}`);
 
   // Use MP name and constituency if available
-  const mpName = mpInfo?.nameAddressAs || "[MP's Name]";
+  const mpProperName = mpInfo?.nameAddressAs || "[MP's Name]";
+  const mpName = mpInfo?.nameFullTitle || "[MP's Name]";
   const constituency = mpInfo?.membershipFrom || "[Constituency]"
 
   const prompt = `
@@ -80,6 +81,9 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
 
     Use the following constituent details:
     ${details_user.join('\n')}
+
+    Address the email to ${mpProperName} or ${mpName}
+    Mention the constituency: ${constituency}
     
     Immigration Concerns:
     ${data.immigrationConcerns}
@@ -123,6 +127,9 @@ export async function generateMPEmail(data: FormData, mpInfo?: {
 
     Use the following constituent details:
     ${details_employer.join('\n')}
+
+    Address the email to ${mpProperName} or ${mpName}
+    Mention the constituency: ${constituency}
     
     Immigration Concerns:
     ${data.immigrationConcerns}

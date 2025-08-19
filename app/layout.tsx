@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { NavBar } from "@/components/nav-bar"
+import { FeedbackButton } from "@/components/feedback-button"
 
 import { Inter } from "next/font/google"
 
@@ -26,6 +27,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <NavBar />
         {children}
+        <div className="fixed bottom-12 right-12 z-50">
+          <FeedbackButton />
+        </div>
       </body>
     </html>
   )
