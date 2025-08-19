@@ -13,18 +13,18 @@ export function NavBar() {
           <Link href="/">
           <div className="flex items-center">
             <PencilLine className="h-6 w-6 mr-2 text-[#4a90e2]" />
-            <span className="font-bold text-lg !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
+            <span className="font-bold text-lg text-[#4a90e2] hover:text-[#ff8c5a] no-underline hover:no-underline">
               Re:Immigration
             </span>
           </div>
           </Link>
           <Link href="/about">
-            <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
+            <span className="text-md text-[#4a90e2] hover:text-[#ff8c5a] no-underline hover:no-underline">
               About Immigration Rules
             </span>
           </Link>
           <Link href="/privacy">
-            <span className="text-md !text-[#4a90e2] !hover:text-[#4a90e2] no-underline hover:no-underline">
+            <span className="text-md text-[#4a90e2] hover:text-[#ff8c5a] no-underline hover:no-underline">
               Privacy Notice
             </span>
           </Link>

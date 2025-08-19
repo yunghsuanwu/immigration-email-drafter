@@ -29,7 +29,7 @@ export function Footer() {
               className="text-blue-500 hover:text-blue-600"
             >
               Not A Stranger
-            </a>
+            </a>.
           </p>
         </div>
       </div>
