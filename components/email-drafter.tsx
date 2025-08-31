@@ -852,7 +852,15 @@ export function EmailDrafter() {
                         render={({ field }) => (
                           <FormItem className="space-y-2">
                             <FormLabel>
-                              What are your top concerns about the immigration white paper? *
+                              What are your top concerns about the
+                              <a
+                                href="/about"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline"
+                              >
+                              immigration white paper?
+                              </a> *
                             </FormLabel>
                             <FormControl>
                               <Textarea
