@@ -37,7 +37,7 @@ export function EmailDrafter() {
   const [generatedEmail, setGeneratedEmail] = useState("")
   const [editedEmail, setEditedEmail] = useState("")
   const [canSend, setCanSend] = useState(false);
-  const [isProTipsOpen, setIsProTipsOpen] = useState(false)
+  const [isProTipsOpen, setIsProTipsOpen] = useState(true)
   const [isExplainerOpen, setIsExplainerOpen] = useState(false)
   const [yearsInUKInvalid, setYearsInUKInvalid] = useState(false)
   const [socInvalid, setSocInvalid] = useState(false)
@@ -859,8 +859,8 @@ export function EmailDrafter() {
                                 rel="noopener noreferrer"
                                 className="underline"
                               >
-                              immigration white paper?
-                              </a> *
+                              immigration rule change?
+                              </a>*
                             </FormLabel>
                             <FormControl>
                               <Textarea
@@ -899,7 +899,7 @@ export function EmailDrafter() {
                         >
                           <span className="flex items-center gap-2">
                             <Info className="h-4 w-4" />
-                            Pro Tips
+                            What should I say?
                           </span>
                           <ChevronDown className={`h-4 w-4 transition-transform ${isProTipsOpen ? 'rotate-180' : ''}`} />
                         </Button>
@@ -908,24 +908,52 @@ export function EmailDrafter() {
                           <div className="px-4 pt-4">
                             {watchWhyWriting === "employer" ? (
                               <div className="space-y-2 text-sm">
-                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                                   <li>Focus on specific business impacts like hiring delays, skill shortages, or project timelines.</li>
                                   <li>Mention concrete numbers if possible (e.g., &quot;We need 5 software developers&quot;).</li>
                                   <li>Explain how this affects your company&apos;s growth and contribution to the UK economy.</li>
+                                  <li>Include any contribution (e.g., visa sponsoring costs, licensing fees) to the UK public through hiring overseas workers.
+                                    <ul className="list-[circle] list-inside ml-6 text-muted-foreground">
+                                      <li>Look up how much immigration-related fee you are contributing: <a
+                                        href="https://www.getborderless.co.uk/blog/visa-fees-calculator"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline"
+                                      >
+                                        Calculator
+                                        </a>*
+                                      </li>
+                                    </ul>
+                                  </li>
                                   <li>Provide insights on how the rule change will affect your industry.</li>
                                   <li>Share any positive experiences with current visa holders in your team.</li>
                                 </ul>
+                                <p className="text-xs">*This third-party tool is not developed by Not A Stranger&apos;s team and hence we cannot be held liable for its performance.</p>
                               </div>
                             ) : (
                               <div className="space-y-2 text-sm">
                                 <p className="font-medium">Mention specific information, including:</p>
-                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                                   <li>Your journey to obtain the UK citizenship or indefinite leave to remain/settled status, if applicable.</li>
-                                  <li>Your contributions to the community (work, volunteering, taxes paid).</li>
+                                  <li>Your contributions to the community (volunteering, community-building, etc.).</li>
+                                  <li>Your contribution to the UK in terms of visa charges, health surcharge, taxes paid, etc.
+                                    <ul className="list-[circle] list-inside ml-6 text-muted-foreground">
+                                      <li>Look up how much immigration-related fee you are contributing: <a
+                                        href="https://www.getborderless.co.uk/blog/visa-fees-calculator"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline"
+                                      >
+                                        Calculator
+                                        </a>*
+                                      </li>
+                                    </ul>
+                                  </li>
                                   <li>Any specific skills or expertise you bring to the UK.</li>
                                   <li>How these changes would affect you, your family, or your partner.</li>
                                   <li>How these changes affect your short-term and long-term plans.</li>
                                 </ul>
+                                <p className="text-xs">*This third-party tool is not developed by Not A Stranger&apos;s team and hence we cannot be held liable for its performance.</p>
                               </div>
                             )}
                           </div>
