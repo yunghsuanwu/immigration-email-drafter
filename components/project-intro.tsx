@@ -1,4 +1,4 @@
-import { TriangleAlert } from "lucide-react"
+import { TriangleAlert, Languages } from "lucide-react"
 
 export function RuleChange() {
   return (
@@ -12,6 +12,32 @@ export function RuleChange() {
           year: 'numeric'
         })}
         </p>
+        <span className="flex flex-col items-start gap-2 mb-6 border border-gray-200 rounded-lg p-4 bg-white">
+          <span className="flex items-center gap-1">
+            <Languages className="w-4 h-4" />
+            <p className="text-sm text-muted-foreground">
+              Read this page in <a
+                href="https://docs.google.com/document/d/19FfLvuFgbo1QLn6v65IgkHy1rM-kyD_qqkCLNqP8yaI/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                  Spanish
+                </a>!
+            </p>
+          </span>
+          
+          <p className="text-xs text-muted-foreground mb-4">
+            ^Courtesy of our friends at <a
+                href="https://irmo.org.uk/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Indoamerican Refugee and Migrant Organisation (IRMO)
+              </a>
+          </p>
+        </span>
 
         <p className="font-bold mb-4">
           On 22 July 2025, the UK government implements{" "}
