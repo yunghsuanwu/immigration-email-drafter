@@ -9,9 +9,8 @@ import { Inter } from "next/font/google"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Re:Immigration – Contact Your MP",
+  title: "Immigration Email Drafter – Contact Your MP",
   description: "Immigration rule change to skilled worker visas, social care worker visa, and other barriers is imminent. Our email drafter helps you write strong, personalized email to your MP. Act now and get your voice heard.",
-  generator: "v0.dev",
 }
 
 export default function RootLayout({
