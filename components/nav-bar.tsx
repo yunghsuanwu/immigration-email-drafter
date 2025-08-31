@@ -14,7 +14,7 @@ export function NavBar() {
           <div className="flex items-center">
             <PencilLine className="h-6 w-6 mr-2 text-[#4a90e2]" />
             <span className="font-bold text-lg text-[#4a90e2] hover:text-[#ff8c5a] no-underline hover:no-underline">
-              Re:Immigration
+              Immigration Email Drafter
             </span>
           </div>
           </Link>

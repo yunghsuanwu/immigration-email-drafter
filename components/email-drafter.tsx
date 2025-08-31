@@ -37,7 +37,7 @@ export function EmailDrafter() {
   const [generatedEmail, setGeneratedEmail] = useState("")
   const [editedEmail, setEditedEmail] = useState("")
   const [canSend, setCanSend] = useState(false);
-  const [isProTipsOpen, setIsProTipsOpen] = useState(true)
+  const [isProTipsOpen, setIsProTipsOpen] = useState(false)
   const [isExplainerOpen, setIsExplainerOpen] = useState(false)
   const [yearsInUKInvalid, setYearsInUKInvalid] = useState(false)
   const [socInvalid, setSocInvalid] = useState(false)
@@ -253,7 +253,7 @@ export function EmailDrafter() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <PencilLine className="h-4 w-4" />
-          Re:Immigration Email Drafter
+          Immigration Email Drafter
           </CardTitle>
         <CardDescription>
         <div>
@@ -275,7 +275,7 @@ export function EmailDrafter() {
             <div className="px-5 pt-1">
               <ul className="text-sm list-disc list-inside space-y-1 text-muted-foreground">
                 <li>Answer the following questions to help your MP understand your situation.</li>
-                <li>This tool then uses AI models (Claude and GPT) to generate a personalised email for you.</li>
+                <li>This tool then uses AI models (Claude, GPT, etc.) to generate a personalised email for you.</li>
                 <li>Answer as much as you&apos;d like; but the more specific you are, the stronger your email.</li>
                 <li>Questions with an asterisk (*) are highly recommended.</li>
               </ul>

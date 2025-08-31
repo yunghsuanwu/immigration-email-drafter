@@ -4,7 +4,7 @@ export function PrivacyNotice() {
       id="privacy-notice"
       className="max-w-2xl mx-auto py-8 md:py-12 px-4 mb-12 text-left"
     >
-      <h1 className="text-3xl font-bold mb-10 text-center">Privacy Notice for Re:Immigration</h1>
+      <h1 className="text-3xl font-bold mb-10 text-center">Privacy Notice for the Immigration Email Drafter</h1>
       
       <p className="mb-10 text-center">
         <strong>Last updated:</strong> {new Date().toLocaleDateString('en-GB', { 
@@ -39,9 +39,9 @@ export function PrivacyNotice() {
         <strong>Contact us by email:</strong> contact[at]notastranger[dot]org
       </p>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-6">What is Re:Immigration?</h2>
+      <h2 className="text-2xl font-semibold mt-10 mb-6">What is the Immigration Email Drafter?</h2>
       <p className="mb-4">
-        Re:Immigration is a large language model-based email drafting tool developed under this initiative. It helps users convey to policymakers how immigration rule changes would impact them, and will be used to catalyse responses at scale to the public whitepaper consultation expected in the coming months.
+        The Immigration Email Drafter is a large language model-based email drafting tool developed under this initiative. It helps users convey to policymakers how immigration rule changes would impact them, and will be used to catalyse responses at scale to the public whitepaper consultation expected in the coming months.
       </p>
       <p className="mb-8">
         <strong>Important:</strong> This tool does not help you send the email to your Member of Parliament (MP); you must manually copy and paste the generated content into your personal email tool and send it yourself. We highly recommend{' '}
@@ -99,7 +99,7 @@ export function PrivacyNotice() {
       <h3 className="text-xl font-semibold mt-8 mb-4">Optional email updates (with your consent)</h3>
       <p className="mb-4">If you opt in to save your email address, we will collect your email address.</p>
       <p className="mb-4">
-        <strong>Why we collect this:</strong> To contact you with updates about Re:Immigration, the Not A Stranger initiative, and relevant campaigns.
+        <strong>Why we collect this:</strong> To contact you with updates about the Immigration Email Drafter, the Not A Stranger initiative, and relevant campaigns.
       </p>
       <p className="mb-8">
         <strong>Legal basis:</strong> Consent (GDPR Article 6(1)(a)) - you can withdraw your consent at any time by contacting us.
