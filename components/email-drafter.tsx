@@ -555,7 +555,7 @@ export function EmailDrafter() {
                 {currentSection === "economic-info" && (
                   <div className="space-y-12">
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Economic Information</h3>
+                      <h3 className="text-lg font-semibold">Activities in the UK</h3>
                       <p className="text-sm text-muted-foreground">This section is completely optional. You can skip if preferred.</p>
                       
                       <FormField
@@ -862,6 +862,7 @@ export function EmailDrafter() {
                               immigration rule change?
                               </a>*
                             </FormLabel>
+                            <p className="text-sm text-muted-foreground">Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, or even in your native tongue!</p>
                             <FormControl>
                               <Textarea
                                 placeholder={
@@ -875,11 +876,9 @@ export function EmailDrafter() {
                                 onBlur={() => setIsFocused(null)}
                               />
                             </FormControl>
-                            {isFocused === "immigrationConcerns" && (
-                              <FormDescription className="text-gray-400 italic">
-                                Write in any way you feel most comfortable; bullet points, short sentences, full paragraphs, or even in your native tongue!
-                              </FormDescription>
-                            )}
+                            <FormDescription className="text-gray-400 italic">
+                              
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -953,7 +952,7 @@ export function EmailDrafter() {
                                   <li>How these changes would affect you, your family, or your partner.</li>
                                   <li>How these changes affect your short-term and long-term plans.</li>
                                 </ul>
-                                <p className="text-xs">*This third-party tool is not developed by Not A Stranger&apos;s team and hence we cannot be held liable for its performance.</p>
+                                <p className="text-xs mt-8">*This third-party tool is not developed by Not A Stranger&apos;s team and hence we cannot be held liable for its performance.</p>
                               </div>
                             )}
                           </div>
