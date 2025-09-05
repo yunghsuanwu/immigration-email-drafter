@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false, // Remove X-Powered-By header
   compress: true, // Enable compression
   
+  // Additional security measures
+  generateEtags: false, // Remove ETags that might reveal server info
+  trailingSlash: false, // Consistent URL structure
+  
   // Additional security headers via headers()
   async headers() {
     return [

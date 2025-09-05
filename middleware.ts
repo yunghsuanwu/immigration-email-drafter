@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { randomBytes } from 'crypto'
 
 export function middleware(request: NextRequest) {
+  // Generate nonce for this request
+  const nonce = randomBytes(16).toString('base64')
+  
   // Create response
   const response = NextResponse.next()
+  
+  // Add nonce to response headers for use in components
+  response.headers.set('x-nonce', nonce)
 
   // Security Headers
   const securityHeaders = {
@@ -20,27 +27,29 @@ export function middleware(request: NextRequest) {
     'X-Powered-By': '',
     'Server': '',
     
-    // Content Security Policy
+    // Content Security Policy with nonces
     'Content-Security-Policy': [
       "default-src 'self'",
-      // Use environment-based CSP for better security
+      // Use nonces instead of unsafe-inline for better security
       ...(process.env.NODE_ENV === 'development' 
-        ? ["script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live"] // Development: Allow Vercel live preview
-        : ["script-src 'self' 'unsafe-inline' https://vercel.live"] // Production: Remove unsafe-eval
+        ? [`script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://vercel.live`] // Development: Allow Vercel live preview
+        : [`script-src 'self' 'nonce-${nonce}' https://vercel.live`] // Production: Remove unsafe-eval
       ),
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
-      "connect-src 'self' https://api.openai.com https://*.supabase.co https://members-api.parliament.uk", // Added Parliament API
+      "connect-src 'self' https://api.openai.com https://*.supabase.co https://members-api.parliament.uk",
       "frame-ancestors 'none'",
       "base-uri 'self'",
-      "form-action 'self'"
+      "form-action 'self'",
+      "object-src 'none'",
+      "media-src 'self'"
     ].join('; '),
     
     // Additional security headers
     'X-DNS-Prefetch-Control': 'off',
     'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()'
   }
 
   // Apply security headers
