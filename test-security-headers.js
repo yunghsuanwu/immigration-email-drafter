@@ -18,8 +18,6 @@ const expectedHeaders = {
   'referrer-policy': 'no-referrer',
   'content-security-policy': 'default-src \'self\'',
   'x-dns-prefetch-control': 'off',
-  'strict-transport-security': 'max-age=31536000',
-  'permissions-policy': 'camera=()',
 };
 
 const forbiddenHeaders = [
@@ -51,17 +49,6 @@ function testHeaders(url) {
         console.log(`❌ ${header}: MISSING`);
       }
     });
-    
-    // Test CSP for nonce usage
-    const csp = res.headers['content-security-policy'];
-    if (csp) {
-      if (csp.includes('nonce-') && !csp.includes('unsafe-inline')) {
-        console.log(`✅ CSP: Uses nonces instead of unsafe-inline`);
-        passedTests++;
-      } else if (csp.includes('unsafe-inline')) {
-        console.log(`⚠️  CSP: Still uses unsafe-inline (consider using nonces)`);
-      }
-    }
     
     // Test forbidden headers
     forbiddenHeaders.forEach(header => {

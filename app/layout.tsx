@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { NavBar } from "@/components/nav-bar"
 import { FeedbackButton } from "@/components/feedback-button"
-import { getNonce } from "@/lib/nonce"
 
 import { Inter } from "next/font/google"
 
@@ -30,23 +29,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const nonce = await getNonce()
-  
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
-        {/* Add nonce to any inline scripts if needed */}
-        {nonce && (
-          <script nonce={nonce} suppressHydrationWarning>
-            {/* Any inline scripts would go here with nonce */}
-          </script>
-        )}
       </head>
       <body className={inter.className}>
         <NavBar />
