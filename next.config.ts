@@ -16,7 +16,37 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  // ... any other existing config options
+  
+  // Security configurations
+  poweredByHeader: false, // Remove X-Powered-By header
+  compress: true, // Enable compression
+  
+  // Additional security headers via headers()
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'no-referrer',
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'off',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 export default nextConfig

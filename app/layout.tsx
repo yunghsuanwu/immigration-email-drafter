@@ -11,6 +11,22 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Immigration Email Drafter – Contact Your MP",
   description: "Immigration rule change to skilled worker visas, social care worker visa, and other barriers is imminent. Our email drafter helps you write strong, personalized email to your MP. Act now and get your voice heard.",
+  // Remove technology disclosure
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  // Security-related meta tags
+  other: {
+    'X-UA-Compatible': 'IE=edge',
+  },
 }
 
 export default function RootLayout({
