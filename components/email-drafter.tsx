@@ -1086,7 +1086,7 @@ export function EmailDrafter() {
                             <div className="space-y-1 leading-none cursor-pointer select-text">
                               <FormLabel>Save your email (optional)</FormLabel>
                               <FormDescription>
-                                I consent to my email address being stored, processed, and used for the purpose of receiving updates about Re:Immigration, the Not A Stranger initiative, and relevant campaigns.
+                                I consent to my email address being stored, processed, and used for the purpose of receiving updates about Immigration Email Drafter, the Not A Stranger initiative, and relevant campaigns.
                               </FormDescription>
                             </div>
                           </FormItem>
