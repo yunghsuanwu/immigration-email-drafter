@@ -78,6 +78,23 @@ export function EmailDrafter() {
     setTimeout(() => setBodyCopied(false), 1500);
   };
 
+  const handleOpenEmailClient = (mpEmail: string, subject: string, body: string) => {
+    // Check if MP email is available
+    if (!mpEmail || mpEmail === "[MP Email]") {
+      toast({
+        title: "MP Email Not Available",
+        description: "Please copy the email content and send it manually to your MP's email address.",
+      });
+      return;
+    }
+
+    // Create mailto URL with pre-filled content
+    const mailtoUrl = `mailto:${encodeURIComponent(mpEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Open the email client
+    window.open(mailtoUrl, '_self');
+  };
+
   const handleFindMP = async () => {
     setMpLoading(true)
     setMpError(null)
@@ -1228,17 +1245,17 @@ export function EmailDrafter() {
                               <ArrowLeft className="mr-2 h-4 w-4" />
                               Back to Edit
                             </Button>
-                            <Button variant="outline" className="flex-1 hover:bg-gray-200 cursor-pointer" onClick={() => {
-                              form.reset();
-                              setGeneratedEmail("");
-                              setEditedEmail("");
-                              setMpInfo(null);
-                              setCurrentSection("basic-info");
-                              setActiveTab("input");
-                              setCanSend(false);
-                            }}>
+                            <Button 
+                              variant="outline" 
+                              className="flex-1 hover:bg-gray-200 cursor-pointer" 
+                              onClick={() => {
+                                // Open email client with pre-filled content
+                                handleOpenEmailClient(mpInfo?.email || "", subject, bodyWithPostal);
+                              }}
+                              title="Opens your default email client with the MP's email, subject, and message pre-filled"
+                            >
                               <Send className="mr-2 h-4 w-4" />
-                              Draft another email
+                              Open Email
                             </Button>
                             </div>
                           </div>
