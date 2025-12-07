@@ -3,7 +3,7 @@ export function CallToAction() {
     <section id="call-to-action" className="py-6 md:py-10 text-center px-4 mb-8">
       <h2 className="text-3xl md:text-5xl font-bold mb-2">On Immigration...</h2>
       <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
-        With the immigration rule change taking effect as of 22 July 2025 (
+        As the immigration rule change took effect on 22 July 2025 (
           <a
            href="/about"
            target="_blank"
